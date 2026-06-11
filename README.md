@@ -33,6 +33,6 @@ mindspace/
 │   ├── landing.css               # Estilos para la página principal
 │   ├── dashboard_estudiante.css  # Estilos para el panel del estudiante
 │   └── dashboard_psicologo.css   # Estilos para el panel del psicólogo
-├── landing_mindspace.html        # Landing page (Inicio, registro e información)
+├── index.html        # Landing page (Inicio, registro e información)
 ├── dashboard_estudiante.html     # Vista y lógicas principales del estudiante
 └── dashboard_psicologo.html      # Vista y lógicas principales del profesional
