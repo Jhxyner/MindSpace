@@ -27,6 +27,7 @@ El frontend está desarrollado con tecnologías web enfocadas en un rendimiento 
 
 ## 📁 Estructura del Proyecto
 
+```text
 mindspace/
 ├── css/
 │   ├── landing.css               # Estilos para la página principal
