@@ -1,4 +1,4 @@
-content = """# MindSpace 🌱
+# MindSpace 🌱
 
 > Democratizando el acceso a la salud mental para jóvenes universitarios en el Perú y Latinoamérica.
 
@@ -24,8 +24,14 @@ MindSpace es una plataforma web orientada a conectar estudiantes universitarios 
 El frontend está desarrollado con tecnologías web enfocadas en un rendimiento óptimo, código limpio y fácil mantenimiento:
 * **HTML5:** Estructura semántica.
 * **CSS3:** Estilos responsivos usando Flexbox y CSS Grid. Implementación de Custom Properties (variables) para mantener una paleta de colores coherente.
-* **JavaScript (Vanilla):** Manejo de la lógica de navegación (Single Page Application simulada en los dashboards), interactividad de modales y manipulación del DOM.
-* **Chart.js:** Renderizado dinámico de gráficos de líneas para el progreso emocional.
-* **Google Fonts:** Uso de las familias tipográficas 'DM Sans' y 'DM Serif Display'.
 
 ## 📁 Estructura del Proyecto
+
+mindspace/
+├── css/
+│   ├── landing.css               # Estilos para la página principal
+│   ├── dashboard_estudiante.css  # Estilos para el panel del estudiante
+│   └── dashboard_psicologo.css   # Estilos para el panel del psicólogo
+├── landing_mindspace.html        # Landing page (Inicio, registro e información)
+├── dashboard_estudiante.html     # Vista y lógicas principales del estudiante
+└── dashboard_psicologo.html      # Vista y lógicas principales del profesional
