@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MindSpace – Dashboard Estudiante</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
+  
+  <link rel="stylesheet" href="css/dashboard_estudiante.css" />
+</head>
+<body>
+<div class="app">
+
+  <aside class="sidebar" id="sidebar">
+    <a href="landing_mindspace.html" class="sidebar-logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round">
+          <path d="M12 2C8 2 4 5.5 4 9.5c0 2.5 1.2 4.7 3 6.1V20l3-2 2 2 2-2 3 2v-4.4c1.8-1.4 3-3.6 3-6.1C20 5.5 16 2 12 2z"/>
+          <path d="M9 10h6M9 13h4"/>
+        </svg>
+      </div>
+      <span class="logo-text">Mind<span>Space</span></span>
+    </a>
+
+    <div class="sidebar-user">
+      <div class="user-avatar">S</div>
+      <div class="user-info">
+        <h4>Sebastián Rueda</h4>
+        <p>Estudiante · UPC</p>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-item active" onclick="navigate('dashboard',this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Inicio
+      </button>
+      <button class="nav-item" onclick="navigate('checkin',this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        ¿Cómo estás hoy?
+      </button>
+      <button class="nav-item" onclick="navigate('progress',this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Mi progreso
+      </button>
+      <button class="nav-item" onclick="navigate('search',this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Encontrar psicólogo
+      </button>
+      <button class="nav-item" onclick="navigate('appointments',this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Mis citas
+        <span class="nav-badge">1</span>
+      </button>
+      <button class="nav-item" onclick="navigate('resources',this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        Para ti
+      </button>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <button class="nav-item" onclick="window.location.href='landing_mindspace.html'">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Cerrar sesión
+      </button>
+    </div>
+  </aside>
+
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <main class="main">
+
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="hamburger-btn" onclick="toggleSidebar()">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="topbar-left" id="topbarTitle">
+          <h2>Buenos días, Sebastián 👋</h2>
+          <p id="topbarDate">Cargando fecha...</p>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+          <span class="notif-dot"></span>
+        </div>
+        <div class="user-avatar" style="width:36px;height:36px;font-size:14px;cursor:pointer">S</div>
+      </div>
+    </header>
+
+    <div class="page active" id="page-dashboard">
+      <div class="grid-3" style="margin-bottom:20px">
+        <div class="metric">
+          <div class="metric-icon" style="background:#E0FAF4">🔥</div>
+          <div>
+            <div class="metric-value">7</div>
+            <div class="metric-label">días de racha</div>
+          </div>
+        </div>
+        <div class="metric">
+          <div class="metric-icon" style="background:var(--teal-light)">📅</div>
+          <div>
+            <div class="metric-value">1</div>
+            <div class="metric-label">cita próxima</div>
+          </div>
+        </div>
+        <div class="metric">
+          <div class="metric-icon" style="background:#FEF9C3">⭐</div>
+          <div>
+            <div class="metric-value">18</div>
+            <div class="metric-label">check-ins este mes</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="checkin-card">
+        <h3>¿Cómo te sientes hoy?</h3>
+        <p>Toma menos de 30 segundos. Tu bienestar importa.</p>
+        <div class="mood-row" id="dashMoods">
+          <div class="mood-btn" onclick="selectMood(this)"><span class="emoji">😢</span><span class="label">Muy mal</span></div>
+          <div class="mood-btn" onclick="selectMood(this)"><span class="emoji">😕</span><span class="label">Mal</span></div>
+          <div class="mood-btn" onclick="selectMood(this)"><span class="emoji">😐</span><span class="label">Regular</span></div>
+          <div class="mood-btn selected" onclick="selectMood(this)"><span class="emoji">🙂</span><span class="label">Bien</span></div>
+          <div class="mood-btn" onclick="selectMood(this)"><span class="emoji">😊</span><span class="label">Muy bien</span></div>
+        </div>
+        <textarea class="checkin-note" rows="2" placeholder="¿Quieres añadir una nota? (opcional)"></textarea>
+        <div style="display:flex;justify-content:flex-end;margin-top:12px">
+          <button class="btn btn-primary btn-sm">Registrar check-in</button>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Tu próxima cita
+          </div>
+          <div class="appt-card">
+            <div class="appt-avatar">V</div>
+            <div class="appt-info">
+              <h4>Dra. Valeria Espinoza Ríos</h4>
+              <p>Psicóloga Clínica · Ansiedad y estrés</p>
+              <div class="appt-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>Martes 20 de mayo · 10:00 AM</div>
+              <div class="appt-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Sesión virtual · S/ 90</div>
+              <div class="appt-actions">
+                <button class="btn btn-primary btn-sm">Ver detalles</button>
+                <button class="btn btn-ghost btn-sm">Cancelar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Tu progreso emocional
+          </div>
+          <div class="chart-wrap">
+            <canvas id="miniChart"></canvas>
+          </div>
+          <div class="chart-legend">
+            <div class="legend-dot"></div>
+            Últimos 7 días
+          </div>
+          <button class="btn btn-secondary btn-sm" style="margin-top:14px;width:100%;justify-content:center" onclick="navigate('progress',null)">Ver progreso completo →</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title" style="justify-content:space-between">
+          <span style="display:flex;align-items:center;gap:8px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;color:var(--teal)"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+            Psicólogos recomendados para ti
+          </span>
+          <button class="btn btn-ghost btn-sm" onclick="navigate('search',null)">Ver todos</button>
+        </div>
+        <div class="psy-grid">
+          <div class="psy-card">
+            <div class="psy-header">
+              <div class="psy-av" style="background:linear-gradient(135deg,var(--teal),var(--mint))">V</div>
+              <div class="psy-meta">
+                <h3>Dra. Valeria Espinoza</h3>
+                <p>San Isidro · Virtual</p>
+                <div class="psy-stars">★★★★★</div>
+                <span class="psy-reviews">4.9 · 87 reseñas</span>
+              </div>
+            </div>
+            <span class="pill">Ansiedad · Depresión</span>
+            <div class="psy-price">S/ 90 <span>/ sesión</span></div>
+            <div class="psy-actions">
+              <button class="btn btn-secondary btn-sm">Ver perfil</button>
+              <button class="btn btn-primary btn-sm" onclick="navigate('search',null)">Agendar</button>
+            </div>
+          </div>
+          <div class="psy-card">
+            <div class="psy-header">
+              <div class="psy-av" style="background:linear-gradient(135deg,var(--navy),var(--teal))">M</div>
+              <div class="psy-meta">
+                <h3>Dr. Marcos Delgado</h3>
+                <p>Miraflores · Virtual</p>
+                <div class="psy-stars">★★★★★</div>
+                <span class="psy-reviews">4.8 · 54 reseñas</span>
+              </div>
+            </div>
+            <span class="pill">Estrés académico</span>
+            <div class="psy-price">S/ 70 <span>/ sesión</span></div>
+            <div class="psy-actions">
+              <button class="btn btn-secondary btn-sm">Ver perfil</button>
+              <button class="btn btn-primary btn-sm" onclick="navigate('search',null)">Agendar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page" id="page-checkin">
+      <div style="max-width:560px;margin:0 auto">
+        <h2 style="font-family:var(--display);font-size:28px;color:var(--navy);margin-bottom:8px">¿Cómo te sientes hoy?</h2>
+        <p style="color:var(--muted);margin-bottom:28px">Registra tu estado emocional. Toma menos de 30 segundos.</p>
+        <div class="card">
+          <div class="mood-row" style="flex-direction:column;gap:12px" id="fullMoods">
+            <div class="mood-btn" onclick="selectFullMood(this)" style="flex:none;display:flex;align-items:center;gap:16px;padding:16px 20px">
+              <span class="emoji" style="font-size:32px">😊</span>
+              <div><strong style="font-size:15px">Muy bien</strong><p style="font-size:12px;color:var(--muted)">Me siento genial hoy</p></div>
+            </div>
+            <div class="mood-btn" onclick="selectFullMood(this)" style="flex:none;display:flex;align-items:center;gap:16px;padding:16px 20px">
+              <span class="emoji" style="font-size:32px">🙂</span>
+              <div><strong style="font-size:15px">Bien</strong><p style="font-size:12px;color:var(--muted)">Todo va bastante bien</p></div>
+            </div>
+            <div class="mood-btn selected" onclick="selectFullMood(this)" style="flex:none;display:flex;align-items:center;gap:16px;padding:16px 20px">
+              <span class="emoji" style="font-size:32px">😐</span>
+              <div><strong style="font-size:15px;color:var(--teal)">Regular</strong><p style="font-size:12px;color:var(--teal)">Ni bien ni mal</p></div>
+            </div>
+            <div class="mood-btn" onclick="selectFullMood(this)" style="flex:none;display:flex;align-items:center;gap:16px;padding:16px 20px">
+              <span class="emoji" style="font-size:32px">😕</span>
+              <div><strong style="font-size:15px">Mal</strong><p style="font-size:12px;color:var(--muted)">Las cosas no van bien</p></div>
+            </div>
+            <div class="mood-btn" onclick="selectFullMood(this)" style="flex:none;display:flex;align-items:center;gap:16px;padding:16px 20px">
+              <span class="emoji" style="font-size:32px">😢</span>
+              <div><strong style="font-size:15px">Muy mal</strong><p style="font-size:12px;color:var(--muted)">Me siento muy mal hoy</p></div>
+            </div>
+          </div>
+          <div style="margin-top:20px">
+            <label style="font-size:13px;font-weight:600;color:var(--muted);display:block;margin-bottom:8px">¿Quieres añadir una nota? (opcional)</label>
+            <textarea class="checkin-note" rows="3" placeholder="Cuéntanos cómo te sientes..."></textarea>
+          </div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:16px;padding:14px">Registrar check-in ✓</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="page" id="page-progress">
+      <h2 style="font-family:var(--display);font-size:28px;color:var(--navy);margin-bottom:20px">Mi progreso emocional</h2>
+      <div class="streak-row">
+        <div class="streak-card"><div class="streak-val">🔥 7</div><div class="streak-label">días de racha</div></div>
+        <div class="streak-card"><div class="streak-val" style="color:var(--mint)">🙂</div><div class="streak-label">Estado promedio: Bien</div></div>
+        <div class="streak-card"><div class="streak-val">18</div><div class="streak-label">check-ins este mes</div></div>
+      </div>
+      <div class="card" style="margin-bottom:20px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+          <div class="card-title" style="margin-bottom:0">Evolución emocional</div>
+          <div class="period-tabs">
+            <div class="period-tab active">Semana</div>
+            <div class="period-tab">Mes</div>
+            <div class="period-tab">3 meses</div>
+          </div>
+        </div>
+        <div class="progress-chart-wrap"><canvas id="progressChart"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Registro del mes — mayo 2026</div>
+        <div class="hmap-labels">
+          <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
+        </div>
+        <div class="heatmap" id="heatmap"></div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap">
+          <span style="font-size:11px;color:var(--muted)">Menos</span>
+          <div style="width:16px;height:16px;border-radius:3px;background:var(--bg);border:1px solid var(--border)"></div>
+          <div style="width:16px;height:16px;border-radius:3px;background:#CCE9EC"></div>
+          <div style="width:16px;height:16px;border-radius:3px;background:#66BCC5"></div>
+          <div style="width:16px;height:16px;border-radius:3px;background:var(--teal)"></div>
+          <div style="width:16px;height:16px;border-radius:3px;background:var(--navy)"></div>
+          <span style="font-size:11px;color:var(--muted)">Más</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="page" id="page-search">
+      <h2 style="font-family:var(--display);font-size:28px;color:var(--navy);margin-bottom:20px">Encontrar psicólogo</h2>
+      <div class="search-top">
+        <div class="search-input-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="search-input" type="text" placeholder="Buscar por nombre o especialidad..." />
+        </div>
+        <button class="btn btn-primary">Buscar</button>
+      </div>
+      <div class="filter-row">
+        <select class="filter-select"><option>Especialidad</option><option>Ansiedad</option><option>Depresión</option><option>Estrés</option><option>Autoestima</option><option>Duelo</option></select>
+        <select class="filter-select"><option>Precio máximo</option><option>Hasta S/ 50</option><option>Hasta S/ 80</option><option>Hasta S/ 100</option><option>Hasta S/ 150</option></select>
+        <select class="filter-select"><option>Modalidad</option><option>Virtual</option><option>Presencial</option><option>Ambas</option></select>
+        <select class="filter-select"><option>Disponibilidad</option><option>Esta semana</option><option>Próxima semana</option><option>Cualquier fecha</option></select>
+      </div>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Mostrando 3 psicólogos verificados</p>
+      <div class="psy-grid">
+        <div class="psy-card">
+          <div class="psy-header">
+            <div class="psy-av" style="background:linear-gradient(135deg,var(--teal),var(--mint))">V</div>
+            <div class="psy-meta">
+              <h3>Dra. Valeria Espinoza Ríos</h3>
+              <p>San Isidro · Lima</p>
+              <div class="psy-stars">★★★★★</div>
+              <span class="psy-reviews">4.9 · 87 reseñas</span>
+            </div>
+          </div>
+          <span class="pill">Ansiedad · Depresión · Estrés</span>
+          <div class="psy-details">
+            <div class="psy-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>8 años de experiencia</div>
+            <div class="psy-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Virtual y presencial</div>
+            <div class="psy-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Disponible esta semana</div>
+          </div>
+          <div class="psy-price">S/ 90 <span>/ sesión</span></div>
+          <div class="psy-actions">
+            <button class="btn btn-secondary btn-sm">Ver perfil</button>
+            <button class="btn btn-primary btn-sm">Agendar cita</button>
+          </div>
+        </div>
+        <div class="psy-card">
+          <div class="psy-header">
+            <div class="psy-av" style="background:linear-gradient(135deg,var(--navy),var(--teal))">M</div>
+            <div class="psy-meta">
+              <h3>Dr. Marcos Delgado Torres</h3>
+              <p>Miraflores · Lima</p>
+              <div class="psy-stars">★★★★★</div>
+              <span class="psy-reviews">4.8 · 54 reseñas</span>
+            </div>
+          </div>
+          <span class="pill">Estrés académico · Autoestima</span>
+          <div class="psy-details">
+            <div class="psy-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>5 años de experiencia</div>
+            <div class="psy-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Solo virtual</div>
+            <div class="psy-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Disponible esta semana</div>
+          </div>
+          <div class="psy-price">S/ 70 <span>/ sesión</span></div>
+          <div class="psy-actions">
+            <button class="btn btn-secondary btn-sm">Ver perfil</button>
+            <button class="btn btn-primary btn-sm">Agendar cita</button>
+          </div>
+        </div>
+        <div class="psy-card">
+          <div class="psy-header">
+            <div class="psy-av" style="background:linear-gradient(135deg,var(--mint),var(--teal))">L</div>
+            <div class="psy-meta">
+              <h3>Dra. Luciana Paredes Vega</h3>
+              <p>San Borja · Lima</p>
+              <div class="psy-stars">★★★★★</div>
+              <span class="psy-reviews">4.7 · 32 reseñas</span>
+            </div>
+          </div>
+          <span class="pill">Relaciones · Duelo · Ansiedad</span>
+          <div class="psy-details">
+            <div class="psy-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>6 años de experiencia</div>
+            <div class="psy-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Virtual y presencial</div>
+            <div class="psy-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Próxima semana</div>
+          </div>
+          <div class="psy-price">S/ 80 <span>/ sesión</span></div>
+          <div class="psy-actions">
+            <button class="btn btn-secondary btn-sm">Ver perfil</button>
+            <button class="btn btn-primary btn-sm">Agendar cita</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page" id="page-appointments">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+        <h2 style="font-family:var(--display);font-size:28px;color:var(--navy)">Mis citas</h2>
+        <button class="btn btn-primary btn-sm" onclick="navigate('search',null)">+ Agendar nueva cita</button>
+      </div>
+      <div class="appt-list">
+        <p style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Próximas</p>
+        <div class="appt-row">
+          <div class="appt-row-av" style="background:linear-gradient(135deg,var(--teal),var(--mint))">V</div>
+          <div class="appt-row-info">
+            <h4>Dra. Valeria Espinoza Ríos</h4>
+            <p>Martes 20 de mayo · 10:00 AM · Virtual · S/ 90</p>
+          </div>
+          <span class="status-badge status-upcoming">Próxima</span>
+          <div class="appt-row-actions">
+            <button class="btn btn-ghost btn-sm">Cancelar</button>
+          </div>
+        </div>
+        <p style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin:16px 0 4px">Historial</p>
+        <div class="appt-row">
+          <div class="appt-row-av" style="background:linear-gradient(135deg,var(--teal),var(--mint))">V</div>
+          <div class="appt-row-info">
+            <h4>Dra. Valeria Espinoza Ríos</h4>
+            <p>Martes 6 de mayo · 10:00 AM · Virtual</p>
+          </div>
+          <span class="status-badge status-done">Completada</span>
+          <div class="appt-row-actions">
+            <button class="btn btn-ghost btn-sm">Ver notas</button>
+          </div>
+        </div>
+        <div class="appt-row">
+          <div class="appt-row-av" style="background:linear-gradient(135deg,var(--navy),var(--teal))">M</div>
+          <div class="appt-row-info">
+            <h4>Dr. Marcos Delgado Torres</h4>
+            <p>Jueves 24 de abril · 3:00 PM · Virtual</p>
+          </div>
+          <span class="status-badge status-cancelled">Cancelada</span>
+          <div class="appt-row-actions">
+            <button class="btn btn-secondary btn-sm" onclick="navigate('search',null)">Reagendar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page" id="page-resources">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+        <h2 style="font-family:var(--display);font-size:28px;color:var(--navy)">Para ti</h2>
+        <div class="filter-row" style="margin-bottom:0">
+          <div class="period-tab active" style="cursor:pointer">Todos</div>
+          <div class="period-tab" style="cursor:pointer">Ansiedad</div>
+          <div class="period-tab" style="cursor:pointer">Estrés</div>
+          <div class="period-tab" style="cursor:pointer">Sueño</div>
+        </div>
+      </div>
+      <div class="res-grid">
+        <div class="res-card"><div class="res-img" style="background:#E0FAF4">🧘</div><div class="res-body"><span class="res-tag" style="background:var(--teal-light);color:var(--teal)">Ansiedad</span><h4>5 técnicas de respiración para calmar la ansiedad</h4><p>Aprende a usar la respiración como herramienta para regular tu sistema nervioso en momentos de estrés.</p><div class="res-footer"><span class="res-time">⏱ 5 min lectura</span><button class="btn btn-primary btn-sm">Leer</button></div></div></div>
+        <div class="res-card"><div class="res-img" style="background:#FEF9C3">📚</div><div class="res-body"><span class="res-tag" style="background:#FEF9C3;color:#92400E">Estrés</span><h4>Cómo manejar el estrés académico en la universidad</h4><p>Estrategias prácticas y basadas en evidencia para estudiantes universitarios con alta carga académica.</p><div class="res-footer"><span class="res-time">⏱ 8 min lectura</span><button class="btn btn-primary btn-sm">Leer</button></div></div></div>
+        <div class="res-card"><div class="res-img" style="background:#EDE9FE">😴</div><div class="res-body"><span class="res-tag" style="background:#EDE9FE;color:#5B21B6">Sueño</span><h4>Higiene del sueño: guía para dormir mejor</h4><p>Hábitos y rutinas que mejorarán la calidad de tu descanso y, con ello, tu rendimiento diario.</p><div class="res-footer"><span class="res-time">⏱ 6 min lectura</span><button class="btn btn-primary btn-sm">Leer</button></div></div></div>
+        <div class="res-card"><div class="res-img" style="background:var(--teal-light)">🧠</div><div class="res-body"><span class="res-tag" style="background:var(--teal-light);color:var(--teal)">Bienestar</span><h4>¿Cuándo buscar ayuda psicológica profesional?</h4><p>Señales que indican que es momento de hablar con un psicólogo y cómo dar ese primer paso.</p><div class="res-footer"><span class="res-time">⏱ 4 min lectura</span><button class="btn btn-primary btn-sm">Leer</button></div></div></div>
+      </div>
+    </div>
+
+  </main>
+
+  <nav class="bottom-nav" id="bottomNav">
+    <button class="bottom-nav-item active" onclick="navigate('dashboard',null);setBottomActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Inicio
+    </button>
+    <button class="bottom-nav-item" onclick="navigate('checkin',null);setBottomActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      Hoy
+    </button>
+    <button class="bottom-nav-item" onclick="navigate('search',null);setBottomActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Buscar
+    </button>
+    <button class="bottom-nav-item" onclick="navigate('appointments',null);setBottomActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Citas
+    </button>
+    <button class="bottom-nav-item" onclick="navigate('resources',null);setBottomActive(this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+      Para ti
+    </button>
+  </nav>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+  // Date
+  const days=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  const months=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const now=new Date();
+  document.getElementById('topbarDate').textContent=`${days[now.getDay()]}, ${now.getDate()} de ${months[now.getMonth()]} de ${now.getFullYear()}`;
+
+  // Navigate
+  function navigate(page,navEl){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById('page-'+page).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+    if(navEl)navEl.classList.add('active');
+    if(page==='progress')buildHeatmap();
+    closeSidebar();
+    window.scrollTo(0,0);
+  }
+
+  // Sidebar
+  function toggleSidebar(){
+    document.getElementById('sidebar').classList.toggle('open');
+    document.getElementById('sidebarOverlay').classList.toggle('open');
+  }
+  function closeSidebar(){
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('open');
+  }
+
+  // Bottom nav active
+  function setBottomActive(el){
+    document.querySelectorAll('.bottom-nav-item').forEach(b=>b.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // Mood selection
+  function selectMood(btn){
+    btn.closest('.mood-row').querySelectorAll('.mood-btn').forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected');
+  }
+  function selectFullMood(btn){
+    document.querySelectorAll('#fullMoods .mood-btn').forEach(b=>b.classList.remove('selected'));
+    btn.classList.add('selected');
+  }
+
+  // Period tabs
+  document.querySelectorAll('.period-tab').forEach(tab=>{
+    tab.addEventListener('click',function(){
+      this.closest('.period-tabs,.card').querySelectorAll('.period-tab').forEach(t=>t.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // Mini chart
+  const mCtx=document.getElementById('miniChart').getContext('2d');
+  new Chart(mCtx,{
+    type:'line',
+    data:{
+      labels:['L','M','M','J','V','S','D'],
+      datasets:[{
+        data:[3,2,3,4,3,4,4],
+        borderColor:'#028090',borderWidth:2.5,
+        backgroundColor:'rgba(2,128,144,0.08)',
+        fill:true,tension:0.4,
+        pointBackgroundColor:'#028090',pointRadius:3,
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{
+        x:{grid:{display:false},ticks:{font:{size:10},color:'#94A3B8'}},
+        y:{display:false,min:0,max:5}
+      }
+    }
+  });
+
+  // Progress chart
+  const pCtx=document.getElementById('progressChart').getContext('2d');
+  new Chart(pCtx,{
+    type:'line',
+    data:{
+      labels:['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20'],
+      datasets:[{
+        label:'Estado emocional',
+        data:[3,3,4,2,3,4,4,3,2,3,4,5,4,3,4,4,3,4,4,4],
+        borderColor:'#028090',borderWidth:2.5,
+        backgroundColor:'rgba(2,128,144,0.10)',
+        fill:true,tension:0.4,
+        pointBackgroundColor:'#02C39A',pointRadius:4,
+        pointHoverRadius:6,
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>{const l=['','Muy mal','Mal','Regular','Bien','Muy bien'];return l[ctx.parsed.y]||ctx.parsed.y}}}},
+      scales:{
+        x:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:11},color:'#94A3B8'}},
+        y:{min:0,max:5,grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:10},color:'#94A3B8',callback:v=>{const l=['','😢','😕','😐','🙂','😊'];return l[v]||''}}}
+      }
+    }
+  });
+
+  // Heatmap
+  function buildHeatmap(){
+    const hm=document.getElementById('heatmap');
+    hm.innerHTML='';
+    const levels=[0,0,1,2,3,2,3,3,2,1,2,3,4,3,2,3,3,4,3,2,1,2,3,3,4,4,3,2,3,0,0];
+    levels.forEach(l=>{
+      const d=document.createElement('div');
+      d.className='hmap-day'+(l>0?' l'+l:'');
+      hm.appendChild(d);
+    });
+  }
+</script>
+</body>
+</html>

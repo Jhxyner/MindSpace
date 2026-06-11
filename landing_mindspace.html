@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Conecta con psicólogos certificados, registra tu estado emocional y accede a recursos de bienestar. MindSpace es la plataforma de salud mental pensada para ti." />
+  <meta name="keywords" content="salud mental, psicólogos online, ansiedad universitaria, terapia online Perú, bienestar emocional" />
+  <meta property="og:title" content="MindSpace – Tu espacio de bienestar mental" />
+  <meta property="og:description" content="Encuentra un psicólogo, agenda tu primera cita y empieza a cuidar tu salud mental hoy." />
+  <meta property="og:type" content="website" />
+  <title>MindSpace – Orientación en salud mental para jóvenes universitarios</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  
+  <link rel="stylesheet" href="css/landing.css" />
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <div class="navbar-inner">
+        <a href="#" class="logo">
+          <div class="logo-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round">
+              <path d="M12 2C8 2 4 5.5 4 9.5c0 2.5 1.2 4.7 3 6.1V20l3-2 2 2 2-2 3 2v-4.4c1.8-1.4 3-3.6 3-6.1C20 5.5 16 2 12 2z"/>
+              <path d="M9 10h6M9 13h4"/>
+            </svg>
+          </div>
+          <span class="logo-text">Mind<span>Space</span></span>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="#how">Cómo funciona</a></li>
+          <li><a href="#benefits">Para jóvenes</a></li>
+          <li><a href="#benefits">Para psicólogos</a></li>
+          <li><a href="#psychologists">Psicólogos</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <button class="btn btn-secondary" onclick="openModal('login')">Iniciar sesión</button>
+          <button class="btn btn-primary" onclick="openModal('register')">Registrarse</button>
+        </div>
+
+        <button class="hamburger" id="hamburger" onclick="toggleMobileNav()">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="mobile-nav" id="mobileNav">
+    <a href="#how">Cómo funciona</a>
+    <a href="#benefits">Para jóvenes</a>
+    <a href="#benefits">Para psicólogos</a>
+    <a href="#psychologists">Psicólogos</a>
+    <button class="btn btn-secondary" onclick="openModal('login')">Iniciar sesión</button>
+    <button class="btn btn-primary" onclick="openModal('register')">Registrarse</button>
+  </div>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-content">
+          <div class="hero-label">🌱 Salud mental accesible en el Perú</div>
+          <h1>Tu bienestar mental,<br /><em>cuando lo necesites</em></h1>
+          <p class="hero-sub">
+            Conecta con psicólogos certificados, registra tu estado emocional
+            y da el primer paso hacia una mejor versión de ti. Sin estigma,
+            sin complicaciones.
+          </p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" style="font-size:16px;padding:15px 32px;" onclick="openModal('register')">
+              Encuentra tu psicólogo →
+            </button>
+            <a href="#how" class="btn btn-secondary" style="color:#94A3B8;border-color:rgba(255,255,255,0.2);">
+              Ver cómo funciona
+            </a>
+          </div>
+          <p class="hero-note">✓ Psicólogos verificados &nbsp;·&nbsp; ✓ Primera sesión orientativa &nbsp;·&nbsp; ✓ <span>100% confidencial</span></p>
+        </div>
+
+        <div class="hero-visual">
+          <div class="hero-card-main">
+            <div class="hero-card-header">
+              <div class="hc-avatar">S</div>
+              <div class="hc-info">
+                <h4>Sebastián Rueda</h4>
+                <p>Estudiante · Ingeniería de Software</p>
+              </div>
+              <span class="hc-badge">Activo</span>
+            </div>
+            <div class="hc-mood">
+              <p>¿Cómo te sientes hoy?</p>
+              <div class="mood-row">
+                <div class="mood-btn">😢</div>
+                <div class="mood-btn">😕</div>
+                <div class="mood-btn">😐</div>
+                <div class="mood-btn active">🙂</div>
+                <div class="mood-btn">😊</div>
+              </div>
+            </div>
+            <div class="hc-next">
+              <p>Próxima cita</p>
+              <div class="hc-next-row">
+                <div class="hc-next-dot"></div>
+                <div class="hc-next-info">
+                  <h5>Dra. Valeria Espinoza</h5>
+                  <span>Martes 20 mayo · 10:00 AM · Virtual</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="float-card float-card-1">
+            <div class="fc-row">
+              <div class="fc-icon" style="background:#E0FAF4;">✅</div>
+              <div class="fc-text">
+                <h5>Cita confirmada</h5>
+                <p>Dra. Espinoza · Hoy 10am</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="float-card float-card-2">
+            <div class="fc-row">
+              <div class="fc-icon" style="background:#E6F7F8;">⭐</div>
+              <div class="fc-text">
+                <h5>+240 psicólogos</h5>
+                <p>Verificados en Perú</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-card fade-up">
+          <div class="stat-num">71%</div>
+          <p class="stat-desc">de jóvenes peruanos con trastorno mental no recibe ningún tipo de atención profesional.</p>
+          <p class="stat-source">— OPS, 2022</p>
+        </div>
+        <div class="stat-card fade-up" style="transition-delay:0.15s">
+          <div class="stat-num">+40%</div>
+          <p class="stat-desc">aumentó la demanda de servicios de salud mental en el Perú entre 2020 y 2023.</p>
+          <p class="stat-source">— MINSA, 2023</p>
+        </div>
+        <div class="stat-card fade-up" style="transition-delay:0.3s">
+          <div class="stat-num">1/2000</div>
+          <p class="stat-desc">psicólogo por habitante en el Perú, frente al estándar de 1 por cada 500 recomendado por la OMS.</p>
+          <p class="stat-source">— OMS / OPS, 2022</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="how" id="how">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="section-label">Proceso</div>
+        <h2>¿Cómo funciona MindSpace?</h2>
+        <p>En tres pasos, y en menos de cinco minutos, puedes tener tu primera cita agendada.</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card fade-up">
+          <div class="step-num">1</div>
+          <div class="step-icon">👤</div>
+          <h3>Regístrate</h3>
+          <p>Crea tu cuenta en minutos con tu correo electrónico. Sin formularios complicados ni información innecesaria.</p>
+        </div>
+        <div class="step-card fade-up" style="transition-delay:0.15s">
+          <div class="step-num">2</div>
+          <div class="step-icon">🔍</div>
+          <h3>Encuentra tu psicólogo</h3>
+          <p>Filtra por especialidad, precio y disponibilidad. Lee reseñas verificadas de otros pacientes antes de decidir.</p>
+        </div>
+        <div class="step-card fade-up" style="transition-delay:0.3s">
+          <div class="step-num">3</div>
+          <div class="step-icon">🗓️</div>
+          <h3>Agenda tu sesión</h3>
+          <p>Reserva directamente desde el perfil del psicólogo. Recibirás confirmación automática y recordatorio 24 horas antes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="benefits" id="benefits">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="section-label">Beneficios</div>
+        <h2>Diseñado para ti, sea quien seas</h2>
+        <p>MindSpace atiende las necesidades de ambos lados de la consulta.</p>
+      </div>
+      <div class="benefits-grid">
+        <div class="benefit-col students fade-up">
+          <div class="benefit-col-header">
+            <div class="benefit-col-icon">🎓</div>
+            <h3>Para jóvenes universitarios</h3>
+          </div>
+          <ul class="benefit-list">
+            <li class="benefit-item">
+              <div class="benefit-check">✓</div>
+              <p>Encuentra psicólogos verificados filtrados por especialidad y precio accesible en soles.</p>
+            </li>
+            <li class="benefit-item">
+              <div class="benefit-check">✓</div>
+              <p>Agenda tu primera cita en menos de 5 minutos desde cualquier dispositivo.</p>
+            </li>
+            <li class="benefit-item">
+              <div class="benefit-check">✓</div>
+              <p>Registra tu estado emocional diario y visualiza tu evolución a lo largo del tiempo.</p>
+            </li>
+            <li class="benefit-item">
+              <div class="benefit-check">✓</div>
+              <p>Accede a recursos de bienestar mental entre sesiones: artículos, técnicas y guías.</p>
+            </li>
+            <li class="benefit-item">
+              <div class="benefit-check">✓</div>
+              <p>Total confidencialidad: tu información nunca será compartida sin tu consentimiento.</p>
+            </li>
+          </ul>
+        </div>
+        <div class="benefit-col psychs fade-up" style="transition-delay:0.15s">
+          <div class="benefit-col-header">
+            <div class="benefit-col-icon">🧑‍⚕️</div>
+            <h3>Para psicólogos independientes</h3>
+          </div>
+          <ul class="benefit-list">
+            <li class="benefit-item">
+              <div class="benefit-check">✓</div>
+              <p>Gestiona tu agenda de citas de forma automática, sin WhatsApp ni cuadernos físicos.</p>
+            </li>
+            <li class="benefit-item">
+              <div class="benefit-check">✓</div>
+              <p>Accede al historial emocional de tus pacientes antes de cada sesión para prepararte mejor.</p>
+            </li>
+            <li class="benefit-item">
+              <div class="benefit-check">✓</div>
+              <p>Amplía tu base de pacientes sin invertir en marketing propio.</p>
+            </li>
+            <li class="benefit-item">
+              <div class="benefit-check">✓</div>
+              <p>Registra notas clínicas digitales vinculadas al perfil de cada paciente.</p>
+            </li>
+            <li class="benefit-item">
+              <div class="benefit-check">✓</div>
+              <p>Recibe recordatorios automáticos para tus pacientes y reduce las inasistencias.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="psychologists" id="psychologists">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="section-label">Profesionales</div>
+        <h2>Conoce a nuestros psicólogos</h2>
+        <p>Todos verificados, con perfil completo y reseñas reales de pacientes.</p>
+      </div>
+      <div class="psy-grid">
+
+        <div class="psy-card fade-up">
+          <div class="psy-avatar" style="background:linear-gradient(135deg,#028090,#02C39A);">V</div>
+          <h3>Dra. Valeria Espinoza Ríos</h3>
+          <p class="psy-specialty">Psicóloga Clínica · San Isidro</p>
+          <div class="psy-stars">★★★★★</div>
+          <span class="psy-reviews">4.9 · 87 reseñas</span>
+          <div class="psy-divider"></div>
+          <div class="psy-info-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            <span>8 años de experiencia</span>
+          </div>
+          <div class="psy-info-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+            <span>Ansiedad · Depresión · Estrés</span>
+          </div>
+          <div class="psy-info-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            <span>Virtual y presencial</span>
+          </div>
+          <div class="psy-price">S/ 90 <span>/ sesión</span></div>
+          <div class="psy-actions">
+            <button class="btn btn-secondary" onclick="openModal('register')">Ver perfil</button>
+            <button class="btn btn-primary" onclick="openModal('register')">Agendar</button>
+          </div>
+        </div>
+
+        <div class="psy-card fade-up" style="transition-delay:0.15s">
+          <div class="psy-avatar" style="background:linear-gradient(135deg,#0D2137,#028090);">M</div>
+          <h3>Dr. Marcos Delgado Torres</h3>
+          <p class="psy-specialty">Psicólogo Educativo · Miraflores</p>
+          <div class="psy-stars">★★★★★</div>
+          <span class="psy-reviews">4.8 · 54 reseñas</span>
+          <div class="psy-divider"></div>
+          <div class="psy-info-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            <span>5 años de experiencia</span>
+          </div>
+          <div class="psy-info-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+            <span>Estrés académico · Autoestima</span>
+          </div>
+          <div class="psy-info-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            <span>Solo virtual</span>
+          </div>
+          <div class="psy-price">S/ 70 <span>/ sesión</span></div>
+          <div class="psy-actions">
+            <button class="btn btn-secondary" onclick="openModal('register')">Ver perfil</button>
+            <button class="btn btn-primary" onclick="openModal('register')">Agendar</button>
+          </div>
+        </div>
+
+        <div class="psy-card fade-up" style="transition-delay:0.3s">
+          <div class="psy-avatar" style="background:linear-gradient(135deg,#02C39A,#028090);">L</div>
+          <h3>Dra. Luciana Paredes Vega</h3>
+          <p class="psy-specialty">Psicóloga Clínica · San Borja</p>
+          <div class="psy-stars">★★★★★</div>
+          <span class="psy-reviews">4.7 · 32 reseñas</span>
+          <div class="psy-divider"></div>
+          <div class="psy-info-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            <span>6 años de experiencia</span>
+          </div>
+          <div class="psy-info-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+            <span>Relaciones · Duelo · Ansiedad</span>
+          </div>
+          <div class="psy-info-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            <span>Virtual y presencial</span>
+          </div>
+          <div class="psy-price">S/ 80 <span>/ sesión</span></div>
+          <div class="psy-actions">
+            <button class="btn btn-secondary" onclick="openModal('register')">Ver perfil</button>
+            <button class="btn btn-primary" onclick="openModal('register')">Agendar</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container">
+      <h2>Da el primer paso hoy</h2>
+      <p>Más de 240 psicólogos verificados esperan para acompañarte.<br/>Registrarte es gratis y toma menos de 2 minutos.</p>
+      <div class="cta-actions">
+        <button class="btn btn-white" style="font-size:16px;padding:15px 36px;" onclick="openModal('register', 'estudiante')">
+          Crear cuenta gratis →
+        </button>
+        <button class="btn" style="color:rgba(255,255,255,0.8);border:1.5px solid rgba(255,255,255,0.3);font-size:16px;padding:15px 36px;" onclick="openModal('register', 'psicologo')">
+          Soy psicólogo/a
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="footer-logo">
+            <div class="logo-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round">
+                <path d="M12 2C8 2 4 5.5 4 9.5c0 2.5 1.2 4.7 3 6.1V20l3-2 2 2 2-2 3 2v-4.4c1.8-1.4 3-3.6 3-6.1C20 5.5 16 2 12 2z"/>
+              </svg>
+            </div>
+            <span>MindSpace</span>
+          </a>
+          <p>Democratizando el acceso a la salud mental para jóvenes universitarios en el Perú y Latinoamérica.</p>
+          <div style="display:flex;gap:12px;">
+            <span style="font-size:20px;cursor:pointer;">📸</span>
+            <span style="font-size:20px;cursor:pointer;">💼</span>
+            <span style="font-size:20px;cursor:pointer;">🐦</span>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Plataforma</h4>
+          <ul>
+            <li><a href="#">Cómo funciona</a></li>
+            <li><a href="#">Para jóvenes</a></li>
+            <li><a href="#">Para psicólogos</a></li>
+            <li><a href="#">Recursos</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Compañía</h4>
+          <ul>
+            <li><a href="#">Sobre MindBridge</a></li>
+            <li><a href="#">Equipo</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Contacto</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#">Términos de uso</a></li>
+            <li><a href="#">Privacidad</a></li>
+            <li><a href="#">Cookies</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-divider"></div>
+      <div class="footer-bottom">
+        <span>© 2026 MindBridge. Todos los derechos reservados.</span>
+        <span>Hecho con ❤️ en Lima, Perú</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()">×</button>
+      <div class="modal-tabs">
+        <div class="modal-tab active" id="tabLogin" onclick="switchTab('login')">Iniciar sesión</div>
+        <div class="modal-tab" id="tabRegister" onclick="switchTab('register')">Registrarse</div>
+      </div>
+
+      <form id="formLogin" onsubmit="handleLogin(event)">
+        <h2>Bienvenido de vuelta</h2>
+        <p>Ingresa tus datos para continuar.</p>
+        <div class="form-group">
+          <label>Soy</label>
+          <select id="loginRole">
+            <option value="estudiante">Joven / estudiante universitario</option>
+            <option value="psicologo">Psicólogo/a independiente</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Correo electrónico</label>
+          <input type="email" placeholder="tucorreo@ejemplo.com" required />
+        </div>
+        <div class="form-group">
+          <label>Contraseña</label>
+          <input type="password" placeholder="••••••••" required />
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-top:8px;">Iniciar sesión</button>
+        <p style="text-align:center;margin-top:16px;font-size:13px;color:var(--text-muted);">
+          ¿Olvidaste tu contraseña? <a href="#" style="color:var(--teal);">Recupérala aquí</a>
+        </p>
+      </form>
+
+      <form id="formRegister" style="display:none;" onsubmit="handleRegister(event)">
+        <h2>Crea tu cuenta</h2>
+        <p>Empieza gratis. Sin compromisos.</p>
+        <div class="form-group">
+          <label>Soy</label>
+          <select id="registerRole">
+            <option value="estudiante">Joven / estudiante universitario</option>
+            <option value="psicologo">Psicólogo/a independiente</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Nombre completo</label>
+          <input type="text" placeholder="Tu nombre completo" required />
+        </div>
+        <div class="form-group">
+          <label>Correo electrónico</label>
+          <input type="email" placeholder="tucorreo@ejemplo.com" required />
+        </div>
+        <div class="form-group">
+          <label>Contraseña</label>
+          <input type="password" placeholder="Mínimo 8 caracteres" required />
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-top:8px;">Crear cuenta gratis →</button>
+        <p style="text-align:center;margin-top:16px;font-size:12px;color:var(--text-muted);">
+          Al registrarte, aceptas nuestros <a href="#" style="color:var(--teal);">Términos de uso</a> y <a href="#" style="color:var(--teal);">Política de privacidad</a>.
+        </p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Navbar scroll
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    // Mobile nav
+    function toggleMobileNav() {
+      document.getElementById('mobileNav').classList.toggle('open');
+    }
+
+    // Modal
+    function openModal(tab, exactRole) {
+      document.getElementById('modalOverlay').classList.add('active');
+      switchTab(tab || 'register');
+      document.body.style.overflow = 'hidden';
+      
+      // Auto-selecciona el rol si se especifica desde los botones del landing
+      if (exactRole) {
+        if (tab === 'register') document.getElementById('registerRole').value = exactRole;
+        if (tab === 'login') document.getElementById('loginRole').value = exactRole;
+      }
+    }
+    
+    function closeModal() {
+      document.getElementById('modalOverlay').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    
+    function closeModalOutside(e) {
+      if (e.target === document.getElementById('modalOverlay')) closeModal();
+    }
+    
+    function switchTab(tab) {
+      document.getElementById('tabLogin').classList.toggle('active', tab === 'login');
+      document.getElementById('tabRegister').classList.toggle('active', tab === 'register');
+      document.getElementById('formLogin').style.display = tab === 'login' ? 'block' : 'none';
+      document.getElementById('formRegister').style.display = tab === 'register' ? 'block' : 'none';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // ── FUNCIONES DE REDIRECCIÓN ───────────────────────────
+    function handleLogin(e) {
+      e.preventDefault();
+      const role = document.getElementById('loginRole').value;
+      if (role === 'estudiante') {
+        window.location.href = 'dashboard_estudiante.html';
+      } else {
+        window.location.href = 'dashboard_psicologo.html';
+      }
+    }
+
+    function handleRegister(e) {
+      e.preventDefault();
+      const role = document.getElementById('registerRole').value;
+      if (role === 'estudiante') {
+        window.location.href = 'dashboard_estudiante.html';
+      } else {
+        window.location.href = 'dashboard_psicologo.html';
+      }
+    }
+
+    // Mood buttons
+    document.querySelectorAll('.mood-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+
+    // Scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
