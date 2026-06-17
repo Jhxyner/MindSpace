@@ -21,9 +21,11 @@ MindSpace es una plataforma web orientada a conectar estudiantes universitarios 
 
 ## 🛠️ Tecnologías Utilizadas
 
-El frontend está desarrollado con tecnologías web enfocadas en un rendimiento óptimo, código limpio y fácil mantenimiento:
-* **HTML5:** Estructura semántica.
+El frontend está desarrollado con tecnologías web enfocadas en un rendimiento óptimo, código limpio (Separación de Responsabilidades) y fácil mantenimiento:
+* **HTML5:** Estructura semántica de las vistas.
 * **CSS3:** Estilos responsivos usando Flexbox y CSS Grid. Implementación de Custom Properties (variables) para mantener una paleta de colores coherente.
+* **JavaScript (Vanilla JS):** Lógica de interfaz, navegación sin recargas, interactividad modularizada por cada vista.
+* **Chart.js:** Librería externa utilizada para renderizar los gráficos de líneas del progreso emocional de los pacientes.
 
 ## 📁 Estructura del Proyecto
 
@@ -33,6 +35,10 @@ mindspace/
 │   ├── landing.css               # Estilos para la página principal
 │   ├── dashboard_estudiante.css  # Estilos para el panel del estudiante
 │   └── dashboard_psicologo.css   # Estilos para el panel del psicólogo
-├── index.html        # Landing page (Inicio, registro e información)
-├── dashboard_estudiante.html     # Vista y lógicas principales del estudiante
-└── dashboard_psicologo.html      # Vista y lógicas principales del profesional
+├── js/
+│   ├── landing.js                # Lógica e interactividad de la página principal (modales, navegación)
+│   ├── dashboard_estudiante.js   # Lógica del estudiante (gráficos de progreso, check-in emocional)
+│   └── dashboard_psicologo.js    # Lógica del profesional (cuadrícula de disponibilidad, detalle de paciente)
+├── index.html                    # Landing page (Inicio, registro e información)
+├── dashboard_estudiante.html     # Vista principal de la experiencia del estudiante
+└── dashboard_psicologo.html      # Vista principal de la experiencia del profesional
