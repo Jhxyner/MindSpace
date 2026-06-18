@@ -1,3 +1,23 @@
+
+// ── HE-02: showToast — reemplaza window.alert() con notificación in-app ───────
+function showToast(message, duration = 2500) {
+  const existing = document.getElementById('mindspace-toast');
+  if (existing) existing.remove();
+
+  const toast = document.createElement('div');
+  toast.id = 'mindspace-toast';
+  toast.className = 'toast-success';
+  toast.innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+         stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+      <path d="M20 6L9 17l-5-5"/>
+    </svg>
+    ${message}
+  `;
+  document.body.appendChild(toast);
+  setTimeout(() => { toast.classList.add('hide'); setTimeout(() => toast.remove(), 400); }, duration);
+}
+
 // Date Formatting
 const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 const months = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
