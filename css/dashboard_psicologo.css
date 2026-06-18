@@ -199,3 +199,35 @@ textarea.note-input:focus{border-color:var(--teal)}
   .patient-profile-header{flex-direction:column}
   .avail-grid{grid-template-columns:auto repeat(7,1fr);font-size:10px}
 }
+/* ── HE-01 / HE-02: Toast notification ───────────────────────────────────────
+   Subsana hallazgos: Visibilidad del estado (H1) y Consistencia (H4) */
+.toast-success {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 9999;
+  background: var(--teal);
+  color: var(--white);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 14px 22px;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(2, 128, 144, 0.35);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: toastIn 0.3s ease;
+  pointer-events: none;
+}
+.toast-success.hide {
+  animation: toastOut 0.4s ease forwards;
+}
+@keyframes toastIn {
+  from { transform: translateX(120%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+@keyframes toastOut {
+  from { transform: translateX(0);    opacity: 1; }
+  to   { transform: translateX(120%); opacity: 0; }
+}
