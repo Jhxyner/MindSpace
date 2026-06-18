@@ -292,19 +292,19 @@
       <div class="search-top">
         <div class="search-input-wrap">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input class="search-input" type="text" placeholder="Buscar por nombre o especialidad..." />
+          <input class="search-input" id="searchInput" type="text" placeholder="Buscar por nombre o especialidad..." oninput="filtrarPsicologos()" />
         </div>
-        <button class="btn btn-primary">Buscar</button>
+        <button class="btn btn-primary" onclick="filtrarPsicologos()">Buscar</button>
       </div>
       <div class="filter-row">
-        <select class="filter-select"><option>Especialidad</option><option>Ansiedad</option><option>Depresión</option><option>Estrés</option><option>Autoestima</option><option>Duelo</option></select>
-        <select class="filter-select"><option>Precio máximo</option><option>Hasta S/ 50</option><option>Hasta S/ 80</option><option>Hasta S/ 100</option><option>Hasta S/ 150</option></select>
-        <select class="filter-select"><option>Modalidad</option><option>Virtual</option><option>Presencial</option><option>Ambas</option></select>
-        <select class="filter-select"><option>Disponibilidad</option><option>Esta semana</option><option>Próxima semana</option><option>Cualquier fecha</option></select>
+        <select class="filter-select" id="filtEspec" onchange="filtrarPsicologos()"><option value="">Especialidad</option><option value="ansiedad">Ansiedad</option><option value="depresión">Depresión</option><option value="estrés">Estrés</option><option value="autoestima">Autoestima</option><option value="duelo">Duelo</option><option value="relaciones">Relaciones</option></select>
+        <select class="filter-select" id="filtPrecio" onchange="filtrarPsicologos()"><option value="">Precio máximo</option><option value="50">Hasta S/ 50</option><option value="80">Hasta S/ 80</option><option value="100">Hasta S/ 100</option><option value="150">Hasta S/ 150</option></select>
+        <select class="filter-select" id="filtModal" onchange="filtrarPsicologos()"><option value="">Modalidad</option><option value="virtual">Virtual</option><option value="presencial">Presencial</option><option value="ambas">Ambas</option></select>
+        <select class="filter-select" id="filtDisp" onchange="filtrarPsicologos()"><option value="">Disponibilidad</option><option value="esta semana">Esta semana</option><option value="próxima semana">Próxima semana</option><option value="cualquier fecha">Cualquier fecha</option></select>
       </div>
-      <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Mostrando 3 psicólogos verificados</p>
+      <p id="searchCount" style="font-size:13px;color:var(--muted);margin-bottom:16px">Mostrando 3 psicólogos verificados</p>
       <div class="psy-grid">
-        <div class="psy-card">
+        <div class="psy-card" data-especialidad="ansiedad depresión estrés" data-precio="90" data-modalidad="ambas" data-disponibilidad="esta semana" data-nombre="dra. valeria espinoza ríos">
           <div class="psy-header">
             <div class="psy-av" style="background:linear-gradient(135deg,var(--teal),var(--mint))">V</div>
             <div class="psy-meta">
@@ -323,10 +323,10 @@
           <div class="psy-price">S/ 90 <span>/ sesión</span></div>
           <div class="psy-actions">
             <button class="btn btn-secondary btn-sm">Ver perfil</button>
-            <button class="btn btn-primary btn-sm">Agendar cita</button>
+            <button class="btn btn-primary btn-sm" onclick="agendarCita('Dra. Valeria Espinoza Ríos','V','Ansiedad · Depresión · Estrés','S/ 90','linear-gradient(135deg,var(--teal),var(--mint))','Virtual y presencial')">Agendar cita</button>
           </div>
         </div>
-        <div class="psy-card">
+        <div class="psy-card" data-especialidad="estrés autoestima" data-precio="70" data-modalidad="virtual" data-disponibilidad="esta semana" data-nombre="dr. marcos delgado torres">
           <div class="psy-header">
             <div class="psy-av" style="background:linear-gradient(135deg,var(--navy),var(--teal))">M</div>
             <div class="psy-meta">
@@ -345,10 +345,10 @@
           <div class="psy-price">S/ 70 <span>/ sesión</span></div>
           <div class="psy-actions">
             <button class="btn btn-secondary btn-sm">Ver perfil</button>
-            <button class="btn btn-primary btn-sm">Agendar cita</button>
+            <button class="btn btn-primary btn-sm" onclick="agendarCita('Dr. Marcos Delgado Torres','M','Estrés académico · Autoestima','S/ 70','linear-gradient(135deg,var(--navy),var(--teal))','Solo virtual')">Agendar cita</button>
           </div>
         </div>
-        <div class="psy-card">
+        <div class="psy-card" data-especialidad="relaciones duelo ansiedad" data-precio="80" data-modalidad="ambas" data-disponibilidad="próxima semana" data-nombre="dra. luciana paredes vega">
           <div class="psy-header">
             <div class="psy-av" style="background:linear-gradient(135deg,var(--mint),var(--teal))">L</div>
             <div class="psy-meta">
@@ -367,7 +367,7 @@
           <div class="psy-price">S/ 80 <span>/ sesión</span></div>
           <div class="psy-actions">
             <button class="btn btn-secondary btn-sm">Ver perfil</button>
-            <button class="btn btn-primary btn-sm">Agendar cita</button>
+            <button class="btn btn-primary btn-sm" onclick="agendarCita('Dra. Luciana Paredes Vega','L','Relaciones · Duelo · Ansiedad','S/ 80','linear-gradient(135deg,var(--mint),var(--teal))','Virtual y presencial')">Agendar cita</button>
           </div>
         </div>
       </div>
@@ -464,5 +464,303 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="js/dashboard_estudiante.js"></script>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     MODAL AGENDAR CITA
+     ═══════════════════════════════════════════════════════════════════════ -->
+<div id="modalCita" style="display:none;position:fixed;inset:0;background:rgba(13,33,55,.55);z-index:200;align-items:center;justify-content:center;padding:16px">
+  <div style="background:#fff;border-radius:16px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(13,33,55,.25)">
+
+    <!-- Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px 16px;border-bottom:1px solid #E2E8F0">
+      <div style="display:flex;align-items:center;gap:14px">
+        <div id="mcAvatar" style="width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#fff;flex-shrink:0"></div>
+        <div>
+          <h3 id="mcNombre" style="font-size:16px;font-weight:700;color:#0D2137;margin-bottom:2px"></h3>
+          <p id="mcEspec" style="font-size:12px;color:#64748B"></p>
+          <p id="mcModal" style="font-size:12px;color:#028090;font-weight:600;margin-top:2px"></p>
+        </div>
+      </div>
+      <button onclick="cerrarModalCita()" style="background:none;border:none;cursor:pointer;padding:6px;border-radius:8px;color:#64748B;font-size:20px;line-height:1">✕</button>
+    </div>
+
+    <div style="padding:20px 24px">
+
+      <!-- Selección de fecha -->
+      <p style="font-size:13px;font-weight:700;color:#0D2137;margin-bottom:10px">📅 Selecciona una fecha</p>
+      <div id="mcFechas" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px"></div>
+
+      <!-- Selección de horario -->
+      <p style="font-size:13px;font-weight:700;color:#0D2137;margin-bottom:10px">🕐 Selecciona un horario</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px">
+        <button class="time-slot" onclick="selectTime(this,'09:00 AM')">09:00 AM</button>
+        <button class="time-slot" onclick="selectTime(this,'10:30 AM')">10:30 AM</button>
+        <button class="time-slot" onclick="selectTime(this,'12:00 PM')">12:00 PM</button>
+        <button class="time-slot" onclick="selectTime(this,'02:00 PM')">02:00 PM</button>
+        <button class="time-slot" onclick="selectTime(this,'03:30 PM')">03:30 PM</button>
+        <button class="time-slot" onclick="selectTime(this,'05:00 PM')">05:00 PM</button>
+      </div>
+
+      <!-- Resumen -->
+      <div id="mcResumen" style="display:none;background:#F0F7F8;border-radius:10px;padding:14px;margin-bottom:20px;font-size:13px;color:#0D2137;line-height:1.8">
+        <strong>Resumen de tu cita:</strong><br>
+        <span id="mcResTexto"></span>
+      </div>
+
+      <!-- Precio + Confirmar -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid #E2E8F0">
+        <div>
+          <span id="mcPrecio" style="font-size:20px;font-weight:700;color:#028090"></span>
+          <span style="font-size:12px;color:#64748B"> / sesión</span>
+        </div>
+        <button id="mcConfirmar" onclick="confirmarCita()" style="background:#028090;color:#fff;border:none;padding:12px 28px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s" onmouseover="this.style.background='#016d7a'" onmouseout="this.style.background='#028090'">
+          Confirmar cita →
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     ESTILOS + FUNCIONES AGENDAR CITA
+     ═══════════════════════════════════════════════════════════════════════ -->
+<style>
+.time-slot {
+  padding: 10px 6px; border: 1.5px solid #E2E8F0; border-radius: 8px;
+  background: #fff; font-family: 'DM Sans',sans-serif; font-size: 13px;
+  font-weight: 600; color: #64748B; cursor: pointer; transition: all .18s;
+}
+.time-slot:hover  { border-color: #028090; color: #028090; background: #E6F7F8; }
+.time-slot.active { border-color: #028090; background: #028090; color: #fff; }
+.date-pill {
+  padding: 8px 14px; border: 1.5px solid #E2E8F0; border-radius: 100px;
+  background: #fff; font-family: 'DM Sans',sans-serif; font-size: 12px;
+  font-weight: 600; color: #64748B; cursor: pointer; transition: all .18s; white-space: nowrap;
+}
+.date-pill:hover  { border-color: #028090; color: #028090; }
+.date-pill.active { border-color: #028090; background: #028090; color: #fff; }
+.new-appt { animation: fadeSlideDown .4s ease; }
+@keyframes fadeSlideDown { from { opacity:0; transform:translateY(-12px); } to { opacity:1; transform:translateY(0); } }
+</style>
+
+<script>
+/* ── Estado del modal ──────────────────────────────────────────────────────── */
+var _mcData = { nombre:'', inicial:'', espec:'', precio:'', grad:'', modalidad:'', fecha:'', hora:'' };
+
+/* ── Abrir modal ───────────────────────────────────────────────────────────── */
+function agendarCita(nombre, inicial, espec, precio, grad, modalidad) {
+  _mcData = { nombre:nombre, inicial:inicial, espec:espec, precio:precio, grad:grad, modalidad:modalidad, fecha:'', hora:'' };
+
+  document.getElementById('mcNombre').textContent  = nombre;
+  document.getElementById('mcEspec').textContent   = espec;
+  document.getElementById('mcModal').textContent   = modalidad;
+  document.getElementById('mcPrecio').textContent  = precio;
+  document.getElementById('mcAvatar').textContent  = inicial;
+  document.getElementById('mcAvatar').style.background = grad;
+  document.getElementById('mcResumen').style.display = 'none';
+
+  /* Reset selections */
+  document.querySelectorAll('.time-slot').forEach(function(b){ b.classList.remove('active'); });
+
+  /* Generar fechas: próximos 5 días hábiles */
+  var cont = document.getElementById('mcFechas');
+  cont.innerHTML = '';
+  var dias = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+  var meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  var d = new Date(); var added = 0;
+  while (added < 5) {
+    d.setDate(d.getDate() + 1);
+    if (d.getDay() === 0 || d.getDay() === 6) continue;
+    var label = dias[d.getDay()] + ' ' + d.getDate() + ' ' + meses[d.getMonth()];
+    var btn = document.createElement('button');
+    btn.className = 'date-pill';
+    btn.textContent = label;
+    btn.setAttribute('data-fecha', label);
+    btn.onclick = (function(lbl, el){ return function(){ selectDate(el, lbl); }; })(label, btn);
+    cont.appendChild(btn);
+    added++;
+  }
+
+  var modal = document.getElementById('modalCita');
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function cerrarModalCita() {
+  document.getElementById('modalCita').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+/* Cerrar al hacer click fuera */
+document.getElementById('modalCita').addEventListener('click', function(e){
+  if (e.target === this) cerrarModalCita();
+});
+
+/* ── Selección de fecha ────────────────────────────────────────────────────── */
+function selectDate(el, fecha) {
+  document.querySelectorAll('.date-pill').forEach(function(b){ b.classList.remove('active'); });
+  el.classList.add('active');
+  _mcData.fecha = fecha;
+  actualizarResumen();
+}
+
+/* ── Selección de hora ─────────────────────────────────────────────────────── */
+function selectTime(el, hora) {
+  document.querySelectorAll('.time-slot').forEach(function(b){ b.classList.remove('active'); });
+  el.classList.add('active');
+  _mcData.hora = hora;
+  actualizarResumen();
+}
+
+/* ── Resumen dinámico ──────────────────────────────────────────────────────── */
+function actualizarResumen() {
+  if (!_mcData.fecha || !_mcData.hora) return;
+  document.getElementById('mcResumen').style.display = 'block';
+  document.getElementById('mcResTexto').innerHTML =
+    '👩‍⚕️ <strong>' + _mcData.nombre + '</strong><br>' +
+    '📅 ' + _mcData.fecha + ' · ' + _mcData.hora + '<br>' +
+    '💻 ' + _mcData.modalidad + ' · ' + _mcData.precio + ' / sesión';
+}
+
+/* ── Confirmar cita ────────────────────────────────────────────────────────── */
+function confirmarCita() {
+  if (!_mcData.fecha || !_mcData.hora) {
+    showToast('⚠ Selecciona fecha y horario para continuar');
+    return;
+  }
+
+  cerrarModalCita();
+  showToast('✓ Cita agendada con ' + _mcData.nombre);
+
+  /* Navegar a Mis Citas después de 1.5s */
+  setTimeout(function () {
+    navigate('appointments', null);
+
+    document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
+    var navAppt = document.querySelector('.nav-item[onclick*="appointments"]');
+    if (navAppt) navAppt.classList.add('active');
+    document.querySelectorAll('.bottom-nav-item').forEach(function(b){ b.classList.remove('active'); });
+    var botAppt = document.querySelector('.bottom-nav-item[onclick*="appointments"]');
+    if (botAppt) botAppt.classList.add('active');
+
+    /* Insertar nueva cita arriba de "Próximas" */
+    var newRow =
+      '<div class="appt-row new-appt" style="border-left:4px solid #028090">' +
+        '<div class="appt-row-av" style="background:' + _mcData.grad + '">' + _mcData.inicial + '</div>' +
+        '<div class="appt-row-info">' +
+          '<h4>' + _mcData.nombre + '</h4>' +
+          '<p>' + _mcData.fecha + ' · ' + _mcData.hora + ' · ' + _mcData.modalidad + ' · ' + _mcData.precio + '</p>' +
+        '</div>' +
+        '<span class="status-badge status-upcoming">Próxima</span>' +
+        '<div class="appt-row-actions">' +
+          '<button class="btn btn-ghost btn-sm" onclick="cancelarCita(this)">Cancelar</button>' +
+        '</div>' +
+      '</div>';
+
+    var apptList = document.querySelector('#page-appointments .appt-list');
+    var firstAppt = apptList.querySelector('.appt-row');
+    if (firstAppt) {
+      firstAppt.insertAdjacentHTML('beforebegin', newRow);
+    } else {
+      apptList.insertAdjacentHTML('afterbegin', newRow);
+    }
+  }, 1500);
+}
+
+/* ── Cancelar cita ─────────────────────────────────────────────────────────── */
+function cancelarCita(btn) {
+  var row = btn.closest('.appt-row');
+  var nombre = row.querySelector('h4') ? row.querySelector('h4').textContent : 'la cita';
+  row.style.opacity = '0.5';
+  row.style.transition = 'opacity .3s';
+  setTimeout(function(){
+    row.querySelector('.status-badge').className = 'status-badge status-cancelled';
+    row.querySelector('.status-badge').textContent = 'Cancelada';
+    btn.parentElement.innerHTML = '';
+    row.style.opacity = '1';
+    showToast('Cita con ' + nombre + ' cancelada');
+  }, 300);
+}
+</script>
+
+<style>
+.toast-success{position:fixed;top:24px;right:24px;z-index:9999;background:#028090;color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;padding:14px 22px;border-radius:10px;box-shadow:0 8px 24px rgba(2,128,144,.35);display:flex;align-items:center;gap:10px;animation:toastIn .3s ease;pointer-events:none;}
+.toast-success.hide{animation:toastOut .4s ease forwards}
+@keyframes toastIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes toastOut{from{transform:translateX(0);opacity:1}to{transform:translateX(120%);opacity:0}}
+</style>
+<script>
+function showToast(msg,dur){dur=dur||2500;var o=document.getElementById('mindspace-toast');if(o)o.remove();var t=document.createElement('div');t.id='mindspace-toast';t.className='toast-success';t.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M20 6L9 17l-5-5"/></svg> '+msg;document.body.appendChild(t);setTimeout(function(){t.classList.add('hide');setTimeout(function(){t.remove()},400)},dur);}
+</script>
+
+<script>
+/* ── Filtrar psicólogos ────────────────────────────────────────────────────── */
+function filtrarPsicologos() {
+  var espec  = (document.getElementById('filtEspec')  || {}).value || '';
+  var precio = (document.getElementById('filtPrecio') || {}).value || '';
+  var modal  = (document.getElementById('filtModal')  || {}).value || '';
+  var disp   = (document.getElementById('filtDisp')   || {}).value || '';
+  var texto  = ((document.getElementById('searchInput') || {}).value || '').toLowerCase().trim();
+
+  var cards   = document.querySelectorAll('#page-search .psy-card');
+  var visible = 0;
+
+  cards.forEach(function(card) {
+    var cardEspec  = card.getAttribute('data-especialidad') || '';
+    var cardPrecio = parseInt(card.getAttribute('data-precio') || '999');
+    var cardModal  = card.getAttribute('data-modalidad')     || '';
+    var cardDisp   = card.getAttribute('data-disponibilidad')|| '';
+    var cardNombre = card.getAttribute('data-nombre')        || '';
+
+    var ok = true;
+
+    /* Especialidad */
+    if (espec && cardEspec.indexOf(espec.toLowerCase()) === -1) ok = false;
+
+    /* Precio máximo */
+    if (precio && cardPrecio > parseInt(precio)) ok = false;
+
+    /* Modalidad: virtual → solo virtual o ambas; presencial → presencial o ambas */
+    if (modal) {
+      if (modal === 'virtual'    && cardModal !== 'virtual'    && cardModal !== 'ambas') ok = false;
+      if (modal === 'presencial' && cardModal !== 'presencial' && cardModal !== 'ambas') ok = false;
+      if (modal === 'ambas'      && cardModal !== 'ambas') ok = false;
+    }
+
+    /* Disponibilidad */
+    if (disp && disp !== 'cualquier fecha' && cardDisp !== disp) ok = false;
+
+    /* Búsqueda por texto */
+    if (texto && cardNombre.indexOf(texto) === -1 && cardEspec.indexOf(texto) === -1) ok = false;
+
+    /* Mostrar / ocultar con animación */
+    if (ok) {
+      card.style.display = '';
+      card.style.animation = 'cardAppear .25s ease';
+      visible++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  /* Actualizar contador */
+  var countEl = document.getElementById('searchCount');
+  if (countEl) {
+    if (visible === 0) {
+      countEl.innerHTML = '<span style="color:#E63946;font-weight:600">No se encontraron psicólogos con esos filtros.</span>';
+    } else {
+      countEl.textContent = 'Mostrando ' + visible + ' psicólogo' + (visible !== 1 ? 's' : '') + ' verificado' + (visible !== 1 ? 's' : '');
+    }
+  }
+}
+</script>
+<style>
+@keyframes cardAppear {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+
 </body>
 </html>
