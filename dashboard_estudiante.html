@@ -8,6 +8,46 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
   
   <link rel="stylesheet" href="css/dashboard_estudiante.css" />
+
+  <style>
+    /* ══════════════════════════════════════════════════════════════
+       ESTILOS FUSIONADOS (Toast, Modal, Animaciones)
+       ══════════════════════════════════════════════════════════════ */
+    /* Toast */
+    .toast-success {
+      position: fixed; top: 24px; right: 24px; z-index: 9999;
+      background: #028090; color: #fff; font-family: 'DM Sans', sans-serif;
+      font-size: 14px; font-weight: 600; padding: 14px 22px; border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(2,128,144,.35); display: flex; align-items: center; gap: 10px;
+      animation: toastIn .3s ease; pointer-events: none;
+    }
+    .toast-success.hide { animation: toastOut .4s ease forwards; }
+    @keyframes toastIn { from { transform: translateX(120%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    @keyframes toastOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(120%); opacity: 0; } }
+
+    /* Modal cita */
+    .time-slot {
+      padding: 10px 6px; border: 1.5px solid #E2E8F0; border-radius: 8px;
+      background: #fff; font-family: 'DM Sans',sans-serif; font-size: 13px;
+      font-weight: 600; color: #64748B; cursor: pointer; transition: all .18s;
+    }
+    .time-slot:hover { border-color: #028090; color: #028090; background: #E6F7F8; }
+    .time-slot.active { border-color: #028090; background: #028090; color: #fff; }
+    .date-pill {
+      padding: 8px 14px; border: 1.5px solid #E2E8F0; border-radius: 100px;
+      background: #fff; font-family: 'DM Sans',sans-serif; font-size: 12px;
+      font-weight: 600; color: #64748B; cursor: pointer; transition: all .18s; white-space: nowrap;
+    }
+    .date-pill:hover { border-color: #028090; color: #028090; }
+    .date-pill.active { border-color: #028090; background: #028090; color: #fff; }
+
+    /* Animaciones */
+    .new-appt { animation: fadeSlideDown .4s ease; }
+    .new-entry { animation: fadeSlide .4s ease; }
+    @keyframes fadeSlide { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeSlideDown { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes cardAppear { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
 </head>
 <body>
 <div class="app">
@@ -127,7 +167,7 @@
         </div>
         <textarea class="checkin-note" rows="2" placeholder="¿Quieres añadir una nota? (opcional)"></textarea>
         <div style="display:flex;justify-content:flex-end;margin-top:12px">
-          <button class="btn btn-primary btn-sm">Registrar check-in</button>
+          <button class="btn btn-primary btn-sm" onclick="showToast('✓ Check-in registrado correctamente')">Registrar check-in</button>
         </div>
       </div>
 
@@ -246,7 +286,7 @@
             <label style="font-size:13px;font-weight:600;color:var(--muted);display:block;margin-bottom:8px">¿Quieres añadir una nota? (opcional)</label>
             <textarea class="checkin-note" rows="3" placeholder="Cuéntanos cómo te sientes..."></textarea>
           </div>
-          <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:16px;padding:14px">Registrar check-in ✓</button>
+          <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:16px;padding:14px" onclick="registrarCheckin()">Registrar check-in ✓</button>
         </div>
       </div>
     </div>
@@ -388,7 +428,7 @@
           </div>
           <span class="status-badge status-upcoming">Próxima</span>
           <div class="appt-row-actions">
-            <button class="btn btn-ghost btn-sm">Cancelar</button>
+            <button class="btn btn-ghost btn-sm" onclick="cancelarCita(this)">Cancelar</button>
           </div>
         </div>
         <p style="font-size:12px;font-weight:700;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin:16px 0 4px">Historial</p>
@@ -462,16 +502,9 @@
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<script src="js/dashboard_estudiante.js"></script>
-
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     MODAL AGENDAR CITA
-     ═══════════════════════════════════════════════════════════════════════ -->
 <div id="modalCita" style="display:none;position:fixed;inset:0;background:rgba(13,33,55,.55);z-index:200;align-items:center;justify-content:center;padding:16px">
   <div style="background:#fff;border-radius:16px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(13,33,55,.25)">
 
-    <!-- Header -->
     <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px 16px;border-bottom:1px solid #E2E8F0">
       <div style="display:flex;align-items:center;gap:14px">
         <div id="mcAvatar" style="width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#fff;flex-shrink:0"></div>
@@ -486,11 +519,9 @@
 
     <div style="padding:20px 24px">
 
-      <!-- Selección de fecha -->
       <p style="font-size:13px;font-weight:700;color:#0D2137;margin-bottom:10px">📅 Selecciona una fecha</p>
       <div id="mcFechas" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px"></div>
 
-      <!-- Selección de horario -->
       <p style="font-size:13px;font-weight:700;color:#0D2137;margin-bottom:10px">🕐 Selecciona un horario</p>
       <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px">
         <button class="time-slot" onclick="selectTime(this,'09:00 AM')">09:00 AM</button>
@@ -501,13 +532,11 @@
         <button class="time-slot" onclick="selectTime(this,'05:00 PM')">05:00 PM</button>
       </div>
 
-      <!-- Resumen -->
       <div id="mcResumen" style="display:none;background:#F0F7F8;border-radius:10px;padding:14px;margin-bottom:20px;font-size:13px;color:#0D2137;line-height:1.8">
         <strong>Resumen de tu cita:</strong><br>
         <span id="mcResTexto"></span>
       </div>
 
-      <!-- Precio + Confirmar -->
       <div style="display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid #E2E8F0">
         <div>
           <span id="mcPrecio" style="font-size:20px;font-weight:700;color:#028090"></span>
@@ -522,33 +551,94 @@
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     ESTILOS + FUNCIONES AGENDAR CITA
-     ═══════════════════════════════════════════════════════════════════════ -->
-<style>
-.time-slot {
-  padding: 10px 6px; border: 1.5px solid #E2E8F0; border-radius: 8px;
-  background: #fff; font-family: 'DM Sans',sans-serif; font-size: 13px;
-  font-weight: 600; color: #64748B; cursor: pointer; transition: all .18s;
-}
-.time-slot:hover  { border-color: #028090; color: #028090; background: #E6F7F8; }
-.time-slot.active { border-color: #028090; background: #028090; color: #fff; }
-.date-pill {
-  padding: 8px 14px; border: 1.5px solid #E2E8F0; border-radius: 100px;
-  background: #fff; font-family: 'DM Sans',sans-serif; font-size: 12px;
-  font-weight: 600; color: #64748B; cursor: pointer; transition: all .18s; white-space: nowrap;
-}
-.date-pill:hover  { border-color: #028090; color: #028090; }
-.date-pill.active { border-color: #028090; background: #028090; color: #fff; }
-.new-appt { animation: fadeSlideDown .4s ease; }
-@keyframes fadeSlideDown { from { opacity:0; transform:translateY(-12px); } to { opacity:1; transform:translateY(0); } }
-</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="js/dashboard_estudiante.js"></script>
 
 <script>
-/* ── Estado del modal ──────────────────────────────────────────────────────── */
+/* ── Toast ─────────────────────────────────────────────────────────────── */
+function showToast(msg, dur) {
+  dur = dur || 2500;
+  var old = document.getElementById('mindspace-toast');
+  if (old) old.remove();
+  var t = document.createElement('div');
+  t.id = 'mindspace-toast';
+  t.className = 'toast-success';
+  t.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M20 6L9 17l-5-5"/></svg> ' + msg;
+  document.body.appendChild(t);
+  setTimeout(function(){ t.classList.add('hide'); setTimeout(function(){ t.remove(); }, 400); }, dur);
+}
+
+/* ── Registrar Check-in Completo ───────────────────────────────────────── */
+function registrarCheckin() {
+  var sel = document.querySelector('#fullMoods .mood-btn.selected');
+  var moodEmoji = '😐', moodLabel = 'Regular';
+  if (sel) {
+    moodEmoji  = sel.querySelector('.emoji').textContent.trim();
+    moodLabel  = sel.querySelector('strong').textContent.trim();
+  }
+  var noteEl = document.querySelector('#page-checkin .checkin-note');
+  var nota   = noteEl ? noteEl.value.trim() : '';
+
+  showToast('✓ Check-in registrado — ' + moodEmoji + ' ' + moodLabel);
+
+  setTimeout(function() {
+    navigate('progress', null);
+    document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
+    var np = document.querySelector('.nav-item[onclick*="progress"]');
+    if (np) np.classList.add('active');
+    document.querySelectorAll('.bottom-nav-item').forEach(function(b){ b.classList.remove('active'); });
+    var bp = document.querySelector('.bottom-nav-item[onclick*="progress"]');
+    if (bp) bp.classList.add('active');
+
+    // Actualizar métricas
+    var sv = document.querySelectorAll('#page-progress .streak-val');
+    if (sv[0]) sv[0].textContent = '🔥 8';
+    if (sv[1]) { sv[1].textContent = moodEmoji; sv[1].parentElement.querySelector('.streak-label').textContent = 'Estado de hoy: ' + moodLabel; }
+    if (sv[2]) sv[2].textContent = '19';
+    document.querySelectorAll('#page-dashboard .metric-value').forEach(function(el){ if (el.textContent.trim()==='18') el.textContent='19'; });
+
+    // Actualizar heatmap
+    setTimeout(function(){
+      var cells = document.querySelectorAll('#heatmap .hmap-day');
+      if (cells.length > 0) {
+        var last = cells[cells.length-1];
+        last.className = 'hmap-day l3';
+        last.style.outline = '2.5px solid #028090';
+        last.style.outlineOffset = '2px';
+      }
+    }, 120);
+
+    // Check-ins recientes
+    var now = new Date();
+    var timeStr = now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
+    var entry =
+      '<div class="new-entry" style="display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--border)">' +
+        '<span style="font-size:26px">' + moodEmoji + '</span>' +
+        '<div style="flex:1"><strong style="font-size:14px;color:var(--navy)">' + moodLabel + '</strong>' +
+        (nota ? '<p style="font-size:12px;color:var(--muted);margin-top:3px">' + nota + '</p>' : '') +
+        '</div><span style="font-size:12px;color:var(--muted);white-space:nowrap">Hoy · ' + timeStr + '</span></div>';
+
+    var rc = document.getElementById('recentCheckins');
+    if (!rc) {
+      rc = document.createElement('div');
+      rc.className = 'card'; rc.id = 'recentCheckins'; rc.style.marginTop = '20px';
+      rc.innerHTML =
+        '<div class="card-title">Check-ins recientes</div>' +
+        '<div id="recentList">' + entry +
+        '<div style="display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--border)"><span style="font-size:26px">😊</span><div style="flex:1"><strong style="font-size:14px;color:var(--navy)">Muy bien</strong><p style="font-size:12px;color:var(--muted);margin-top:3px">Gran día, me sentí productivo</p></div><span style="font-size:12px;color:var(--muted)">7 mayo</span></div>' +
+        '<div style="display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--border)"><span style="font-size:26px">🙂</span><div style="flex:1"><strong style="font-size:14px;color:var(--navy)">Bien</strong></div><span style="font-size:12px;color:var(--muted)">6 mayo</span></div>' +
+        '<div style="display:flex;align-items:center;gap:12px;padding:14px 0"><span style="font-size:26px">😐</span><div style="flex:1"><strong style="font-size:14px;color:var(--navy)">Regular</strong><p style="font-size:12px;color:var(--muted);margin-top:3px">Un poco cansado</p></div><span style="font-size:12px;color:var(--muted)">5 mayo</span></div>' +
+        '</div>';
+      document.getElementById('page-progress').appendChild(rc);
+    } else {
+      document.getElementById('recentList').insertAdjacentHTML('afterbegin', entry);
+    }
+  }, 1500);
+}
+
+/* ── Modal Agendar Cita ────────────────────────────────────────────────── */
 var _mcData = { nombre:'', inicial:'', espec:'', precio:'', grad:'', modalidad:'', fecha:'', hora:'' };
 
-/* ── Abrir modal ───────────────────────────────────────────────────────────── */
 function agendarCita(nombre, inicial, espec, precio, grad, modalidad) {
   _mcData = { nombre:nombre, inicial:inicial, espec:espec, precio:precio, grad:grad, modalidad:modalidad, fecha:'', hora:'' };
 
@@ -592,12 +682,10 @@ function cerrarModalCita() {
   document.body.style.overflow = '';
 }
 
-/* Cerrar al hacer click fuera */
 document.getElementById('modalCita').addEventListener('click', function(e){
   if (e.target === this) cerrarModalCita();
 });
 
-/* ── Selección de fecha ────────────────────────────────────────────────────── */
 function selectDate(el, fecha) {
   document.querySelectorAll('.date-pill').forEach(function(b){ b.classList.remove('active'); });
   el.classList.add('active');
@@ -605,7 +693,6 @@ function selectDate(el, fecha) {
   actualizarResumen();
 }
 
-/* ── Selección de hora ─────────────────────────────────────────────────────── */
 function selectTime(el, hora) {
   document.querySelectorAll('.time-slot').forEach(function(b){ b.classList.remove('active'); });
   el.classList.add('active');
@@ -613,7 +700,6 @@ function selectTime(el, hora) {
   actualizarResumen();
 }
 
-/* ── Resumen dinámico ──────────────────────────────────────────────────────── */
 function actualizarResumen() {
   if (!_mcData.fecha || !_mcData.hora) return;
   document.getElementById('mcResumen').style.display = 'block';
@@ -623,7 +709,6 @@ function actualizarResumen() {
     '💻 ' + _mcData.modalidad + ' · ' + _mcData.precio + ' / sesión';
 }
 
-/* ── Confirmar cita ────────────────────────────────────────────────────────── */
 function confirmarCita() {
   if (!_mcData.fecha || !_mcData.hora) {
     showToast('⚠ Selecciona fecha y horario para continuar');
@@ -633,18 +718,16 @@ function confirmarCita() {
   cerrarModalCita();
   showToast('✓ Cita agendada con ' + _mcData.nombre);
 
-  /* Navegar a Mis Citas después de 1.5s */
   setTimeout(function () {
     navigate('appointments', null);
-
     document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
     var navAppt = document.querySelector('.nav-item[onclick*="appointments"]');
     if (navAppt) navAppt.classList.add('active');
+    
     document.querySelectorAll('.bottom-nav-item').forEach(function(b){ b.classList.remove('active'); });
     var botAppt = document.querySelector('.bottom-nav-item[onclick*="appointments"]');
     if (botAppt) botAppt.classList.add('active');
 
-    /* Insertar nueva cita arriba de "Próximas" */
     var newRow =
       '<div class="appt-row new-appt" style="border-left:4px solid #028090">' +
         '<div class="appt-row-av" style="background:' + _mcData.grad + '">' + _mcData.inicial + '</div>' +
@@ -668,7 +751,6 @@ function confirmarCita() {
   }, 1500);
 }
 
-/* ── Cancelar cita ─────────────────────────────────────────────────────────── */
 function cancelarCita(btn) {
   var row = btn.closest('.appt-row');
   var nombre = row.querySelector('h4') ? row.querySelector('h4').textContent : 'la cita';
@@ -682,20 +764,8 @@ function cancelarCita(btn) {
     showToast('Cita con ' + nombre + ' cancelada');
   }, 300);
 }
-</script>
 
-<style>
-.toast-success{position:fixed;top:24px;right:24px;z-index:9999;background:#028090;color:#fff;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;padding:14px 22px;border-radius:10px;box-shadow:0 8px 24px rgba(2,128,144,.35);display:flex;align-items:center;gap:10px;animation:toastIn .3s ease;pointer-events:none;}
-.toast-success.hide{animation:toastOut .4s ease forwards}
-@keyframes toastIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
-@keyframes toastOut{from{transform:translateX(0);opacity:1}to{transform:translateX(120%);opacity:0}}
-</style>
-<script>
-function showToast(msg,dur){dur=dur||2500;var o=document.getElementById('mindspace-toast');if(o)o.remove();var t=document.createElement('div');t.id='mindspace-toast';t.className='toast-success';t.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M20 6L9 17l-5-5"/></svg> '+msg;document.body.appendChild(t);setTimeout(function(){t.classList.add('hide');setTimeout(function(){t.remove()},400)},dur);}
-</script>
-
-<script>
-/* ── Filtrar psicólogos ────────────────────────────────────────────────────── */
+/* ── Filtrar Psicólogos ────────────────────────────────────────────────── */
 function filtrarPsicologos() {
   var espec  = (document.getElementById('filtEspec')  || {}).value || '';
   var precio = (document.getElementById('filtPrecio') || {}).value || '';
@@ -715,26 +785,18 @@ function filtrarPsicologos() {
 
     var ok = true;
 
-    /* Especialidad */
     if (espec && cardEspec.indexOf(espec.toLowerCase()) === -1) ok = false;
-
-    /* Precio máximo */
     if (precio && cardPrecio > parseInt(precio)) ok = false;
-
-    /* Modalidad: virtual → solo virtual o ambas; presencial → presencial o ambas */
+    
     if (modal) {
       if (modal === 'virtual'    && cardModal !== 'virtual'    && cardModal !== 'ambas') ok = false;
       if (modal === 'presencial' && cardModal !== 'presencial' && cardModal !== 'ambas') ok = false;
       if (modal === 'ambas'      && cardModal !== 'ambas') ok = false;
     }
-
-    /* Disponibilidad */
+    
     if (disp && disp !== 'cualquier fecha' && cardDisp !== disp) ok = false;
-
-    /* Búsqueda por texto */
     if (texto && cardNombre.indexOf(texto) === -1 && cardEspec.indexOf(texto) === -1) ok = false;
 
-    /* Mostrar / ocultar con animación */
     if (ok) {
       card.style.display = '';
       card.style.animation = 'cardAppear .25s ease';
@@ -744,7 +806,6 @@ function filtrarPsicologos() {
     }
   });
 
-  /* Actualizar contador */
   var countEl = document.getElementById('searchCount');
   if (countEl) {
     if (visible === 0) {
@@ -755,12 +816,6 @@ function filtrarPsicologos() {
   }
 }
 </script>
-<style>
-@keyframes cardAppear {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-</style>
 
 </body>
 </html>
