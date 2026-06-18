@@ -152,5 +152,14 @@ function buildHeatmap() {
     const d = document.createElement('div');
     d.className = 'hmap-day' + (l > 0 ? ' l' + l : '');
     hm.appendChild(d);
-  });
+  
+  // ── HE-01: Registrar check-in — mostrar toast de confirmación ────────────────
+  const checkinBtn = document.querySelector('.checkin-card .btn-primary');
+  if (checkinBtn) {
+    checkinBtn.addEventListener('click', () => {
+      showToast('✓ Check-in registrado correctamente');
+    });
+  }
+
+});
 }
