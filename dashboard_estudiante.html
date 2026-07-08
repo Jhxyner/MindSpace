@@ -41,6 +41,20 @@
     .date-pill:hover { border-color: #028090; color: #028090; }
     .date-pill.active { border-color: #028090; background: #028090; color: #fff; }
 
+    /* Notificaciones */
+    .notif-panel {
+      display: none; position: absolute; top: 48px; right: 0; width: 300px;
+      background: #fff; border-radius: 12px; box-shadow: 0 12px 28px rgba(13,33,55,.15);
+      border: 1px solid #E2E8F0; z-index: 100; overflow: hidden;
+    }
+    .notif-panel.open { display: block; animation: fadeSlideDown .2s ease; }
+    .notif-panel-title { font-size: 13px; font-weight: 700; color: #0D2137; padding: 12px 16px; border-bottom: 1px solid #E2E8F0; }
+    .notif-item { display: flex; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #F1F5F9; }
+    .notif-item:last-child { border-bottom: none; }
+    .notif-item strong { font-size: 13px; color: #0D2137; display: block; margin-bottom: 2px; }
+    .notif-item p { font-size: 12px; color: #64748B; margin: 0; line-height: 1.4; }
+    .notif-emoji { font-size: 18px; flex-shrink: 0; }
+
     /* Animaciones */
     .new-appt { animation: fadeSlideDown .4s ease; }
     .new-entry { animation: fadeSlide .4s ease; }
@@ -80,6 +94,10 @@
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
         ¿Cómo estás hoy?
       </button>
+      <button class="nav-item" onclick="navigate('companion',this)">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        Acompañamiento rápido
+      </button>
       <button class="nav-item" onclick="navigate('progress',this)">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
         Mi progreso
@@ -100,7 +118,7 @@
     </nav>
 
     <div class="sidebar-bottom">
-      <button class="nav-item" onclick="window.location.href='index.html'">
+      <button class="nav-item" onclick="cerrarSesion()">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
         Cerrar sesión
       </button>
@@ -122,9 +140,26 @@
         </div>
       </div>
       <div class="topbar-right">
-        <div class="topbar-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
-          <span class="notif-dot"></span>
+        <div class="notif-wrap" style="position:relative">
+          <div class="topbar-icon" onclick="toggleNotifications(event)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+            <span class="notif-dot" id="notifDot"></span>
+          </div>
+          <div class="notif-panel" id="notifPanel">
+            <div class="notif-panel-title">Notificaciones</div>
+            <div class="notif-item">
+              <span class="notif-emoji">📅</span>
+              <div><strong>Cita próxima</strong><p>Tu sesión con la Dra. Valeria Espinoza Ríos se acerca. Revisa los detalles en "Mis citas".</p></div>
+            </div>
+            <div class="notif-item">
+              <span class="notif-emoji">🔥</span>
+              <div><strong>¡Racha de 7 días!</strong><p>Llevas una semana seguida registrando tu estado de ánimo. Sigue así.</p></div>
+            </div>
+            <div class="notif-item">
+              <span class="notif-emoji">🧘</span>
+              <div><strong>Nuevo recurso para ti</strong><p>"5 técnicas de respiración para calmar la ansiedad" ya está disponible en Para ti.</p></div>
+            </div>
+          </div>
         </div>
         <div class="user-avatar" style="width:36px;height:36px;font-size:14px;cursor:pointer">S</div>
       </div>
@@ -142,7 +177,7 @@
         <div class="metric">
           <div class="metric-icon" style="background:var(--teal-light)">📅</div>
           <div>
-            <div class="metric-value">1</div>
+            <div class="metric-value" id="metricCitas">1</div>
             <div class="metric-label">cita próxima</div>
           </div>
         </div>
@@ -165,9 +200,9 @@
           <div class="mood-btn selected" onclick="selectMood(this)"><span class="emoji">🙂</span><span class="label">Bien</span></div>
           <div class="mood-btn" onclick="selectMood(this)"><span class="emoji">😊</span><span class="label">Muy bien</span></div>
         </div>
-        <textarea class="checkin-note" rows="2" placeholder="¿Quieres añadir una nota? (opcional)"></textarea>
+        <textarea class="checkin-note" id="dashCheckinNote" rows="2" placeholder="¿Quieres añadir una nota? (opcional)"></textarea>
         <div style="display:flex;justify-content:flex-end;margin-top:12px">
-          <button class="btn btn-primary btn-sm" onclick="showToast('✓ Check-in registrado correctamente')">Registrar check-in</button>
+          <button class="btn btn-primary btn-sm" onclick="registrarCheckin('dash')">Registrar check-in</button>
         </div>
       </div>
 
@@ -177,16 +212,18 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
             Tu próxima cita
           </div>
-          <div class="appt-card">
-            <div class="appt-avatar">V</div>
-            <div class="appt-info">
-              <h4>Dra. Valeria Espinoza Ríos</h4>
-              <p>Psicóloga Clínica · Ansiedad y estrés</p>
-              <div class="appt-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>Martes 20 de mayo · 10:00 AM</div>
-              <div class="appt-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Sesión virtual · S/ 90</div>
-              <div class="appt-actions">
-                <button class="btn btn-primary btn-sm">Ver detalles</button>
-                <button class="btn btn-ghost btn-sm">Cancelar</button>
+          <div id="inicioProximaCita">
+            <div class="appt-card">
+              <div class="appt-avatar">V</div>
+              <div class="appt-info">
+                <h4>Dra. Valeria Espinoza Ríos</h4>
+                <p>Psicóloga Clínica · Ansiedad y estrés</p>
+                <div class="appt-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>Martes 20 de mayo · 10:00 AM</div>
+                <div class="appt-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Sesión virtual · S/ 90</div>
+                <div class="appt-actions">
+                  <button class="btn btn-primary btn-sm">Ver detalles</button>
+                  <button class="btn btn-ghost btn-sm">Cancelar</button>
+                </div>
               </div>
             </div>
           </div>
@@ -216,42 +253,7 @@
           </span>
           <button class="btn btn-ghost btn-sm" onclick="navigate('search',null)">Ver todos</button>
         </div>
-        <div class="psy-grid">
-          <div class="psy-card">
-            <div class="psy-header">
-              <div class="psy-av" style="background:linear-gradient(135deg,var(--teal),var(--mint))">V</div>
-              <div class="psy-meta">
-                <h3>Dra. Valeria Espinoza</h3>
-                <p>San Isidro · Virtual</p>
-                <div class="psy-stars">★★★★★</div>
-                <span class="psy-reviews">4.9 · 87 reseñas</span>
-              </div>
-            </div>
-            <span class="pill">Ansiedad · Depresión</span>
-            <div class="psy-price">S/ 90 <span>/ sesión</span></div>
-            <div class="psy-actions">
-              <button class="btn btn-secondary btn-sm">Ver perfil</button>
-              <button class="btn btn-primary btn-sm" onclick="navigate('search',null)">Agendar</button>
-            </div>
-          </div>
-          <div class="psy-card">
-            <div class="psy-header">
-              <div class="psy-av" style="background:linear-gradient(135deg,var(--navy),var(--teal))">M</div>
-              <div class="psy-meta">
-                <h3>Dr. Marcos Delgado</h3>
-                <p>Miraflores · Virtual</p>
-                <div class="psy-stars">★★★★★</div>
-                <span class="psy-reviews">4.8 · 54 reseñas</span>
-              </div>
-            </div>
-            <span class="pill">Estrés académico</span>
-            <div class="psy-price">S/ 70 <span>/ sesión</span></div>
-            <div class="psy-actions">
-              <button class="btn btn-secondary btn-sm">Ver perfil</button>
-              <button class="btn btn-primary btn-sm" onclick="navigate('search',null)">Agendar</button>
-            </div>
-          </div>
-        </div>
+        <div class="psy-grid" id="psyGridInicio"></div>
       </div>
     </div>
 
@@ -291,6 +293,34 @@
       </div>
     </div>
 
+    <div class="page" id="page-companion">
+      <div style="max-width:640px;margin:0 auto">
+        <h2 style="font-family:var(--display);font-size:28px;color:var(--navy);margin-bottom:8px">Acompañamiento rápido</h2>
+        <p style="color:var(--muted);margin-bottom:20px">Un espacio para desahogarte y encontrar calma en el momento. No reemplaza una consulta profesional.</p>
+
+        <div class="card" style="padding:0;overflow:hidden;display:flex;flex-direction:column;height:560px">
+          <div style="background:linear-gradient(135deg,var(--teal),var(--mint));padding:16px 20px;display:flex;align-items:center;gap:12px;flex-shrink:0">
+            <div style="width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:18px">🌿</div>
+            <div>
+              <h3 style="color:#fff;font-size:15px;font-weight:700;margin:0">Compañero MindSpace</h3>
+              <p style="color:rgba(255,255,255,.85);font-size:11px;margin:0">Aquí para escucharte · No diagnostica</p>
+            </div>
+          </div>
+
+          <div id="companion-messages" style="flex:1;padding:18px;overflow-y:auto;background:var(--bg);display:flex;flex-direction:column;gap:12px;font-size:13.5px"></div>
+
+          <div style="padding:14px 16px;border-top:1px solid var(--border);background:#fff;display:flex;gap:10px;flex-shrink:0">
+            <input type="text" id="companion-input" placeholder="Cuéntame cómo te sientes..." onkeypress="handleCompanionKeyPress(event)" style="flex:1;padding:11px 16px;border:1px solid var(--border);border-radius:20px;font-family:inherit;font-size:13.5px;outline:none" />
+            <button onclick="sendCompanionMessage()" style="background:var(--teal);color:#fff;border:none;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <p style="font-size:11px;color:var(--muted);margin-top:10px;text-align:center">⚠️ Este acompañante no diagnostica ni reemplaza terapia profesional. Si estás en una situación de emergencia, comunícate con la Línea 113 opción 5 (Perú) o acude a un servicio de urgencias.</p>
+      </div>
+    </div>
+
     <div class="page" id="page-progress">
       <h2 style="font-family:var(--display);font-size:28px;color:var(--navy);margin-bottom:20px">Mi progreso emocional</h2>
       <div class="streak-row">
@@ -298,34 +328,40 @@
         <div class="streak-card"><div class="streak-val" style="color:var(--mint)">🙂</div><div class="streak-label">Estado promedio: Bien</div></div>
         <div class="streak-card"><div class="streak-val">18</div><div class="streak-label">check-ins este mes</div></div>
       </div>
-      <div class="card" style="margin-bottom:20px">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
-          <div class="card-title" style="margin-bottom:0">Evolución emocional</div>
-          <div class="period-tabs">
-            <div class="period-tab active">Semana</div>
-            <div class="period-tab">Mes</div>
-            <div class="period-tab">3 meses</div>
+
+      <div class="grid-2">
+
+        <div class="card" style="margin-bottom:0">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+            <div class="card-title" style="margin-bottom:0">Evolución emocional</div>
+            <div class="period-tabs">
+              <div class="period-tab active">Semana</div>
+              <div class="period-tab">Mes</div>
+              <div class="period-tab">3 meses</div>
+            </div>
+          </div>
+          <div class="progress-chart-wrap"><canvas id="progressChart"></canvas></div>
+        </div>
+
+        <div class="card" style="margin-bottom:0">
+          <div class="card-title">Registro del mes — mayo 2026</div>
+          <div class="hmap-labels">
+            <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
+          </div>
+          <div class="heatmap" id="heatmap"></div>
+          
+          <div style="display:flex;align-items:center;gap:8px;margin-top:16px;flex-wrap:wrap;max-width:300px;margin-left:auto;margin-right:auto;justify-content:center;">
+            <span style="font-size:11px;color:var(--muted)">Menos</span>
+            <div style="width:16px;height:16px;border-radius:3px;background:var(--bg);border:1px solid var(--border)"></div>
+            <div style="width:16px;height:16px;border-radius:3px;background:#CCE9EC"></div>
+            <div style="width:16px;height:16px;border-radius:3px;background:#66BCC5"></div>
+            <div style="width:16px;height:16px;border-radius:3px;background:var(--teal)"></div>
+            <div style="width:16px;height:16px;border-radius:3px;background:var(--navy)"></div>
+            <span style="font-size:11px;color:var(--muted)">Más</span>
           </div>
         </div>
-        <div class="progress-chart-wrap"><canvas id="progressChart"></canvas></div>
-      </div>
-      <div class="card">
-        <div class="card-title">Registro del mes — mayo 2026</div>
-        <div class="hmap-labels">
-          <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
-        </div>
-        <div class="heatmap" id="heatmap"></div>
-        <div style="display:flex;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap">
-          <span style="font-size:11px;color:var(--muted)">Menos</span>
-          <div style="width:16px;height:16px;border-radius:3px;background:var(--bg);border:1px solid var(--border)"></div>
-          <div style="width:16px;height:16px;border-radius:3px;background:#CCE9EC"></div>
-          <div style="width:16px;height:16px;border-radius:3px;background:#66BCC5"></div>
-          <div style="width:16px;height:16px;border-radius:3px;background:var(--teal)"></div>
-          <div style="width:16px;height:16px;border-radius:3px;background:var(--navy)"></div>
-          <span style="font-size:11px;color:var(--muted)">Más</span>
-        </div>
-      </div>
-    </div>
+
+      </div> </div>
 
     <div class="page" id="page-search">
       <h2 style="font-family:var(--display);font-size:28px;color:var(--navy);margin-bottom:20px">Encontrar psicólogo</h2>
@@ -342,72 +378,34 @@
         <select class="filter-select" id="filtModal" onchange="filtrarPsicologos()"><option value="">Modalidad</option><option value="virtual">Virtual</option><option value="presencial">Presencial</option><option value="ambas">Ambas</option></select>
         <select class="filter-select" id="filtDisp" onchange="filtrarPsicologos()"><option value="">Disponibilidad</option><option value="esta semana">Esta semana</option><option value="próxima semana">Próxima semana</option><option value="cualquier fecha">Cualquier fecha</option></select>
       </div>
-      <p id="searchCount" style="font-size:13px;color:var(--muted);margin-bottom:16px">Mostrando 3 psicólogos verificados</p>
-      <div class="psy-grid">
-        <div class="psy-card" data-especialidad="ansiedad depresión estrés" data-precio="90" data-modalidad="ambas" data-disponibilidad="esta semana" data-nombre="dra. valeria espinoza ríos">
-          <div class="psy-header">
-            <div class="psy-av" style="background:linear-gradient(135deg,var(--teal),var(--mint))">V</div>
-            <div class="psy-meta">
-              <h3>Dra. Valeria Espinoza Ríos</h3>
-              <p>San Isidro · Lima</p>
-              <div class="psy-stars">★★★★★</div>
-              <span class="psy-reviews">4.9 · 87 reseñas</span>
+      <p id="searchCount" style="font-size:13px;color:var(--muted);margin-bottom:16px">Cargando psicólogos...</p>
+      <div class="psy-grid" id="psyGridSearch"></div>
+    </div>
+
+    <div id="modalPerfilPsicologo" style="display:none;position:fixed;inset:0;background:rgba(13,33,55,.55);z-index:200;align-items:center;justify-content:center;padding:16px">
+      <div style="background:#fff;border-radius:16px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(13,33,55,.25)">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px 16px;border-bottom:1px solid #E2E8F0">
+          <div style="display:flex;align-items:center;gap:14px">
+            <div id="vpAvatar" style="width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;flex-shrink:0"></div>
+            <div>
+              <h3 id="vpNombre" style="font-size:17px;font-weight:700;color:#0D2137;margin-bottom:2px"></h3>
+              <p id="vpDistrito" style="font-size:12px;color:#64748B"></p>
+              <p id="vpRating" style="font-size:12px;color:#028090;font-weight:600;margin-top:2px"></p>
             </div>
           </div>
-          <span class="pill">Ansiedad · Depresión · Estrés</span>
-          <div class="psy-details">
-            <div class="psy-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>8 años de experiencia</div>
-            <div class="psy-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Virtual y presencial</div>
-            <div class="psy-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Disponible esta semana</div>
-          </div>
-          <div class="psy-price">S/ 90 <span>/ sesión</span></div>
-          <div class="psy-actions">
-            <button class="btn btn-secondary btn-sm">Ver perfil</button>
-            <button class="btn btn-primary btn-sm" onclick="agendarCita('Dra. Valeria Espinoza Ríos','V','Ansiedad · Depresión · Estrés','S/ 90','linear-gradient(135deg,var(--teal),var(--mint))','Virtual y presencial')">Agendar cita</button>
-          </div>
+          <button onclick="cerrarModalPerfil()" style="background:none;border:none;cursor:pointer;padding:6px;border-radius:8px;color:#64748B;font-size:20px;line-height:1">✕</button>
         </div>
-        <div class="psy-card" data-especialidad="estrés autoestima" data-precio="70" data-modalidad="virtual" data-disponibilidad="esta semana" data-nombre="dr. marcos delgado torres">
-          <div class="psy-header">
-            <div class="psy-av" style="background:linear-gradient(135deg,var(--navy),var(--teal))">M</div>
-            <div class="psy-meta">
-              <h3>Dr. Marcos Delgado Torres</h3>
-              <p>Miraflores · Lima</p>
-              <div class="psy-stars">★★★★★</div>
-              <span class="psy-reviews">4.8 · 54 reseñas</span>
-            </div>
+        <div style="padding:20px 24px">
+          <p id="vpBio" style="font-size:13px;color:#334155;line-height:1.6;margin-bottom:16px"></p>
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:#0D2137;margin-bottom:20px">
+            <div>🎓 <strong id="vpExperiencia"></strong></div>
+            <div>💻 <span id="vpModalidad"></span></div>
+            <div>🏷️ <span id="vpEspecialidades"></span></div>
+            <div>📅 Disponible <span id="vpDisponibilidad"></span></div>
           </div>
-          <span class="pill">Estrés académico · Autoestima</span>
-          <div class="psy-details">
-            <div class="psy-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>5 años de experiencia</div>
-            <div class="psy-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Solo virtual</div>
-            <div class="psy-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Disponible esta semana</div>
-          </div>
-          <div class="psy-price">S/ 70 <span>/ sesión</span></div>
-          <div class="psy-actions">
-            <button class="btn btn-secondary btn-sm">Ver perfil</button>
-            <button class="btn btn-primary btn-sm" onclick="agendarCita('Dr. Marcos Delgado Torres','M','Estrés académico · Autoestima','S/ 70','linear-gradient(135deg,var(--navy),var(--teal))','Solo virtual')">Agendar cita</button>
-          </div>
-        </div>
-        <div class="psy-card" data-especialidad="relaciones duelo ansiedad" data-precio="80" data-modalidad="ambas" data-disponibilidad="próxima semana" data-nombre="dra. luciana paredes vega">
-          <div class="psy-header">
-            <div class="psy-av" style="background:linear-gradient(135deg,var(--mint),var(--teal))">L</div>
-            <div class="psy-meta">
-              <h3>Dra. Luciana Paredes Vega</h3>
-              <p>San Borja · Lima</p>
-              <div class="psy-stars">★★★★★</div>
-              <span class="psy-reviews">4.7 · 32 reseñas</span>
-            </div>
-          </div>
-          <span class="pill">Relaciones · Duelo · Ansiedad</span>
-          <div class="psy-details">
-            <div class="psy-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>6 años de experiencia</div>
-            <div class="psy-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>Virtual y presencial</div>
-            <div class="psy-detail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Próxima semana</div>
-          </div>
-          <div class="psy-price">S/ 80 <span>/ sesión</span></div>
-          <div class="psy-actions">
-            <button class="btn btn-secondary btn-sm">Ver perfil</button>
-            <button class="btn btn-primary btn-sm" onclick="agendarCita('Dra. Luciana Paredes Vega','L','Relaciones · Duelo · Ansiedad','S/ 80','linear-gradient(135deg,var(--mint),var(--teal))','Virtual y presencial')">Agendar cita</button>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid #E2E8F0">
+            <div><span id="vpPrecio" style="font-size:20px;font-weight:700;color:#028090"></span><span style="font-size:12px;color:#64748B"> / sesión</span></div>
+            <button id="vpAgendarBtn" class="btn btn-primary btn-sm">Agendar cita →</button>
           </div>
         </div>
       </div>
@@ -523,13 +521,8 @@
       <div id="mcFechas" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px"></div>
 
       <p style="font-size:13px;font-weight:700;color:#0D2137;margin-bottom:10px">🕐 Selecciona un horario</p>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px">
-        <button class="time-slot" onclick="selectTime(this,'09:00 AM')">09:00 AM</button>
-        <button class="time-slot" onclick="selectTime(this,'10:30 AM')">10:30 AM</button>
-        <button class="time-slot" onclick="selectTime(this,'12:00 PM')">12:00 PM</button>
-        <button class="time-slot" onclick="selectTime(this,'02:00 PM')">02:00 PM</button>
-        <button class="time-slot" onclick="selectTime(this,'03:30 PM')">03:30 PM</button>
-        <button class="time-slot" onclick="selectTime(this,'05:00 PM')">05:00 PM</button>
+      <div id="mcHorarios" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px">
+        <p style="grid-column:1/-1;font-size:12px;color:#64748B">Selecciona primero una fecha.</p>
       </div>
 
       <div id="mcResumen" style="display:none;background:#F0F7F8;border-radius:10px;padding:14px;margin-bottom:20px;font-size:13px;color:#0D2137;line-height:1.8">
@@ -553,6 +546,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="js/dashboard_estudiante.js"></script>
+<script src="js/gemini-config.js"></script>
+<script src="js/companion.js"></script>
 
 <script>
 /* ── Toast ─────────────────────────────────────────────────────────────── */
@@ -568,79 +563,82 @@ function showToast(msg, dur) {
   setTimeout(function(){ t.classList.add('hide'); setTimeout(function(){ t.remove(); }, 400); }, dur);
 }
 
-/* ── Registrar Check-in Completo ───────────────────────────────────────── */
-function registrarCheckin() {
-  var sel = document.querySelector('#fullMoods .mood-btn.selected');
-  var moodEmoji = '😐', moodLabel = 'Regular';
+/* ── Registrar Check-in Completo (funciona desde "Inicio" y desde "¿Cómo estás hoy?") ── */
+function registrarCheckin(origen) {
+  var esInicio = origen === 'dash';
+  var sel = document.querySelector(esInicio ? '#dashMoods .mood-btn.selected' : '#fullMoods .mood-btn.selected');
+  var moodEmoji = '😐', moodLabel = 'Regular', moodValue = 3;
+
   if (sel) {
-    moodEmoji  = sel.querySelector('.emoji').textContent.trim();
-    moodLabel  = sel.querySelector('strong').textContent.trim();
+    var emojiEl = sel.querySelector('.emoji');
+    var labelEl = sel.querySelector('strong') || sel.querySelector('.label');
+    if (emojiEl) moodEmoji = emojiEl.textContent.trim();
+    if (labelEl) moodLabel = labelEl.textContent.trim();
+    if (moodLabel === 'Muy mal') moodValue = 1;
+    if (moodLabel === 'Mal') moodValue = 2;
+    if (moodLabel === 'Regular') moodValue = 3;
+    if (moodLabel === 'Bien') moodValue = 4;
+    if (moodLabel === 'Muy bien') moodValue = 5;
   }
-  var noteEl = document.querySelector('#page-checkin .checkin-note');
+
+  var noteEl = document.getElementById(esInicio ? 'dashCheckinNote' : null) || document.querySelector('#page-checkin .checkin-note');
   var nota   = noteEl ? noteEl.value.trim() : '';
 
+  const userSession = JSON.parse(localStorage.getItem('mindspace_user'));
+  if (!userSession) return;
+
+  let checkins = JSON.parse(localStorage.getItem(`checkins_${userSession.correo}`)) || [];
+
+  const now = new Date();
+  const dateStr = now.getDate() + '/' + (now.getMonth() + 1);
+  const timeStr = now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
+
+  const newCheckin = { fecha: dateStr, hora: timeStr, emoji: moodEmoji, etiqueta: moodLabel, valor: moodValue, nota: nota };
+
+  // Validar si ya hay un check-in hoy
+  const existingIndex = checkins.findIndex(c => c.fecha === dateStr);
+  if (existingIndex !== -1) {
+      checkins[existingIndex] = newCheckin; // Si existe, lo actualizamos
+  } else {
+      checkins.push(newCheckin); // Si no existe, agregamos uno nuevo
+  }
+
+  localStorage.setItem(`checkins_${userSession.correo}`, JSON.stringify(checkins));
+
   showToast('✓ Check-in registrado — ' + moodEmoji + ' ' + moodLabel);
+  if (noteEl) noteEl.value = '';
+
+  // Reconstruimos las gráficas con los nuevos datos
+  if (typeof renderizarMiniChart === 'function') renderizarMiniChart();
+  buildHeatmap();
+
+  if (esInicio) return; // en Inicio nos quedamos en la misma vista
 
   setTimeout(function() {
-    navigate('progress', null);
-    document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
-    var np = document.querySelector('.nav-item[onclick*="progress"]');
-    if (np) np.classList.add('active');
-    document.querySelectorAll('.bottom-nav-item').forEach(function(b){ b.classList.remove('active'); });
-    var bp = document.querySelector('.bottom-nav-item[onclick*="progress"]');
-    if (bp) bp.classList.add('active');
+    if(typeof renderizarGraficoProgreso === 'function') renderizarGraficoProgreso();
 
-    // Actualizar métricas
-    var sv = document.querySelectorAll('#page-progress .streak-val');
-    if (sv[0]) sv[0].textContent = '🔥 8';
-    if (sv[1]) { sv[1].textContent = moodEmoji; sv[1].parentElement.querySelector('.streak-label').textContent = 'Estado de hoy: ' + moodLabel; }
-    if (sv[2]) sv[2].textContent = '19';
-    document.querySelectorAll('#page-dashboard .metric-value').forEach(function(el){ if (el.textContent.trim()==='18') el.textContent='19'; });
-
-    // Actualizar heatmap
-    setTimeout(function(){
-      var cells = document.querySelectorAll('#heatmap .hmap-day');
-      if (cells.length > 0) {
-        var last = cells[cells.length-1];
-        last.className = 'hmap-day l3';
-        last.style.outline = '2.5px solid #028090';
-        last.style.outlineOffset = '2px';
-      }
-    }, 120);
-
-    // Check-ins recientes
-    var now = new Date();
-    var timeStr = now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
-    var entry =
-      '<div class="new-entry" style="display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--border)">' +
-        '<span style="font-size:26px">' + moodEmoji + '</span>' +
-        '<div style="flex:1"><strong style="font-size:14px;color:var(--navy)">' + moodLabel + '</strong>' +
-        (nota ? '<p style="font-size:12px;color:var(--muted);margin-top:3px">' + nota + '</p>' : '') +
-        '</div><span style="font-size:12px;color:var(--muted);white-space:nowrap">Hoy · ' + timeStr + '</span></div>';
-
-    var rc = document.getElementById('recentCheckins');
-    if (!rc) {
-      rc = document.createElement('div');
-      rc.className = 'card'; rc.id = 'recentCheckins'; rc.style.marginTop = '20px';
-      rc.innerHTML =
-        '<div class="card-title">Check-ins recientes</div>' +
-        '<div id="recentList">' + entry +
-        '<div style="display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--border)"><span style="font-size:26px">😊</span><div style="flex:1"><strong style="font-size:14px;color:var(--navy)">Muy bien</strong><p style="font-size:12px;color:var(--muted);margin-top:3px">Gran día, me sentí productivo</p></div><span style="font-size:12px;color:var(--muted)">7 mayo</span></div>' +
-        '<div style="display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--border)"><span style="font-size:26px">🙂</span><div style="flex:1"><strong style="font-size:14px;color:var(--navy)">Bien</strong></div><span style="font-size:12px;color:var(--muted)">6 mayo</span></div>' +
-        '<div style="display:flex;align-items:center;gap:12px;padding:14px 0"><span style="font-size:26px">😐</span><div style="flex:1"><strong style="font-size:14px;color:var(--navy)">Regular</strong><p style="font-size:12px;color:var(--muted);margin-top:3px">Un poco cansado</p></div><span style="font-size:12px;color:var(--muted)">5 mayo</span></div>' +
-        '</div>';
-      document.getElementById('page-progress').appendChild(rc);
-    } else {
-      document.getElementById('recentList').insertAdjacentHTML('afterbegin', entry);
-    }
-  }, 1500);
+    // Hacemos la navegación manual al Progreso
+    const navItem = document.querySelector('.nav-item[onclick*="progress"]');
+    navigate('progress', navItem);
+  }, 1200);
 }
 
 /* ── Modal Agendar Cita ────────────────────────────────────────────────── */
-var _mcData = { nombre:'', inicial:'', espec:'', precio:'', grad:'', modalidad:'', fecha:'', hora:'' };
+var _mcData = { nombre:'', correo:'', inicial:'', espec:'', precio:'', grad:'', modalidad:'', fecha:'', hora:'' };
+var TIME_SLOTS_DEFAULT = ['09:00 AM','10:30 AM','12:00 PM','02:00 PM','03:30 PM','05:00 PM'];
 
-function agendarCita(nombre, inicial, espec, precio, grad, modalidad) {
-  _mcData = { nombre:nombre, inicial:inicial, espec:espec, precio:precio, grad:grad, modalidad:modalidad, fecha:'', hora:'' };
+/* Disponibilidad configurada por el psicólogo en su panel (o un horario por defecto si no configuró nada) */
+function obtenerDisponibilidadPsicologo(correo) {
+  var data = correo ? JSON.parse(localStorage.getItem('disponibilidad_' + correo)) : null;
+  if (data) return data;
+  var def = {};
+  ['Lun','Mar','Mié','Jue','Vie'].forEach(function(d){ def[d] = TIME_SLOTS_DEFAULT.slice(); });
+  ['Sáb','Dom'].forEach(function(d){ def[d] = []; });
+  return def;
+}
+
+function agendarCita(nombre, correo, inicial, espec, precio, grad, modalidad) {
+  _mcData = { nombre:nombre, correo:correo, inicial:inicial, espec:espec, precio:precio, grad:grad, modalidad:modalidad, fecha:'', hora:'' };
 
   document.getElementById('mcNombre').textContent  = nombre;
   document.getElementById('mcEspec').textContent   = espec;
@@ -649,9 +647,7 @@ function agendarCita(nombre, inicial, espec, precio, grad, modalidad) {
   document.getElementById('mcAvatar').textContent  = inicial;
   document.getElementById('mcAvatar').style.background = grad;
   document.getElementById('mcResumen').style.display = 'none';
-
-  /* Reset selections */
-  document.querySelectorAll('.time-slot').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('mcHorarios').innerHTML = '<p style="grid-column:1/-1;font-size:12px;color:#64748B">Selecciona primero una fecha.</p>';
 
   /* Generar fechas: próximos 5 días hábiles */
   var cont = document.getElementById('mcFechas');
@@ -662,12 +658,13 @@ function agendarCita(nombre, inicial, espec, precio, grad, modalidad) {
   while (added < 5) {
     d.setDate(d.getDate() + 1);
     if (d.getDay() === 0 || d.getDay() === 6) continue;
-    var label = dias[d.getDay()] + ' ' + d.getDate() + ' ' + meses[d.getMonth()];
+    var diaAbrev = dias[d.getDay()];
+    var label = diaAbrev + ' ' + d.getDate() + ' ' + meses[d.getMonth()];
     var btn = document.createElement('button');
     btn.className = 'date-pill';
     btn.textContent = label;
     btn.setAttribute('data-fecha', label);
-    btn.onclick = (function(lbl, el){ return function(){ selectDate(el, lbl); }; })(label, btn);
+    btn.onclick = (function(lbl, el, dia){ return function(){ selectDate(el, lbl, dia); }; })(label, btn, diaAbrev);
     cont.appendChild(btn);
     added++;
   }
@@ -686,15 +683,46 @@ document.getElementById('modalCita').addEventListener('click', function(e){
   if (e.target === this) cerrarModalCita();
 });
 
-function selectDate(el, fecha) {
+function selectDate(el, fecha, dia) {
   document.querySelectorAll('.date-pill').forEach(function(b){ b.classList.remove('active'); });
   el.classList.add('active');
   _mcData.fecha = fecha;
-  actualizarResumen();
+  renderizarHorariosDisponibles(dia, fecha);
+}
+
+function renderizarHorariosDisponibles(dia, fechaLabel) {
+  var cont = document.getElementById('mcHorarios');
+  cont.innerHTML = '';
+  _mcData.hora = '';
+  document.getElementById('mcResumen').style.display = 'none';
+
+  var dispo = obtenerDisponibilidadPsicologo(_mcData.correo);
+  var horasDisponibles = dispo[dia] || [];
+
+  /* Excluir horarios que ya tienen otra cita con este psicólogo ese mismo día */
+  var todasLasCitas = JSON.parse(localStorage.getItem('mindspace_citas')) || [];
+  var ocupadas = todasLasCitas
+    .filter(function(c){ return c.psicologo === _mcData.nombre && c.fecha === fechaLabel && c.estado !== 'Cancelada' && c.estado !== 'Rechazada'; })
+    .map(function(c){ return c.hora; });
+
+  var libres = horasDisponibles.filter(function(h){ return ocupadas.indexOf(h) === -1; });
+
+  if (libres.length === 0) {
+    cont.innerHTML = '<p style="grid-column:1/-1;font-size:12px;color:#64748B">No hay horarios disponibles ese día. Elige otra fecha.</p>';
+    return;
+  }
+
+  libres.forEach(function(hora) {
+    var btn = document.createElement('button');
+    btn.className = 'time-slot';
+    btn.textContent = hora;
+    btn.onclick = function(){ selectTime(btn, hora); };
+    cont.appendChild(btn);
+  });
 }
 
 function selectTime(el, hora) {
-  document.querySelectorAll('.time-slot').forEach(function(b){ b.classList.remove('active'); });
+  document.querySelectorAll('#mcHorarios .time-slot').forEach(function(b){ b.classList.remove('active'); });
   el.classList.add('active');
   _mcData.hora = hora;
   actualizarResumen();
@@ -715,11 +743,51 @@ function confirmarCita() {
     return;
   }
 
+  // 1. Obtener la sesión del usuario logueado
+  const userSession = JSON.parse(localStorage.getItem('mindspace_user'));
+  if (!userSession) {
+    showToast('❌ Error de sesión. Por favor inicia sesión nuevamente.');
+    return;
+  }
+
+  // 2. Crear el objeto de la cita aprovechando tu variable _mcData
+  const nuevaCita = {
+    id: Date.now().toString(),
+    pacienteCorreo: userSession.correo,
+    pacienteNombre: userSession.nombre,
+    psicologo: _mcData.nombre,
+    psicologoCorreo: _mcData.correo,
+    especialidad: _mcData.espec,
+    fecha: _mcData.fecha,
+    hora: _mcData.hora,
+    modalidad: _mcData.modalidad,
+    precio: _mcData.precio,
+    inicial: _mcData.inicial,
+    grad: _mcData.grad,
+    estado: "Pendiente" // Se crea como pendiente
+  };
+
+  // 3. Guardar en la base de datos global
+  let todasLasCitas = JSON.parse(localStorage.getItem('mindspace_citas')) || [];
+  todasLasCitas.push(nuevaCita);
+  localStorage.setItem('mindspace_citas', JSON.stringify(todasLasCitas));
+
+  // 4. Cerrar modal y notificar
   cerrarModalCita();
   showToast('✓ Cita agendada con ' + _mcData.nombre);
 
+  // 5. Actualizar la vista de inmediato y navegar
+  if (typeof renderizarCitasDelEstudiante === 'function') {
+    renderizarCitasDelEstudiante();
+  }
+  if (typeof renderizarProximaCitaInicio === 'function') {
+    renderizarProximaCitaInicio();
+  }
+
   setTimeout(function () {
     navigate('appointments', null);
+    
+    // Activar los botones de navegación correctos (tu código original)
     document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
     var navAppt = document.querySelector('.nav-item[onclick*="appointments"]');
     if (navAppt) navAppt.classList.add('active');
@@ -727,43 +795,9 @@ function confirmarCita() {
     document.querySelectorAll('.bottom-nav-item').forEach(function(b){ b.classList.remove('active'); });
     var botAppt = document.querySelector('.bottom-nav-item[onclick*="appointments"]');
     if (botAppt) botAppt.classList.add('active');
-
-    var newRow =
-      '<div class="appt-row new-appt" style="border-left:4px solid #028090">' +
-        '<div class="appt-row-av" style="background:' + _mcData.grad + '">' + _mcData.inicial + '</div>' +
-        '<div class="appt-row-info">' +
-          '<h4>' + _mcData.nombre + '</h4>' +
-          '<p>' + _mcData.fecha + ' · ' + _mcData.hora + ' · ' + _mcData.modalidad + ' · ' + _mcData.precio + '</p>' +
-        '</div>' +
-        '<span class="status-badge status-upcoming">Próxima</span>' +
-        '<div class="appt-row-actions">' +
-          '<button class="btn btn-ghost btn-sm" onclick="cancelarCita(this)">Cancelar</button>' +
-        '</div>' +
-      '</div>';
-
-    var apptList = document.querySelector('#page-appointments .appt-list');
-    var firstAppt = apptList.querySelector('.appt-row');
-    if (firstAppt) {
-      firstAppt.insertAdjacentHTML('beforebegin', newRow);
-    } else {
-      apptList.insertAdjacentHTML('afterbegin', newRow);
-    }
-  }, 1500);
+  }, 1200);
 }
 
-function cancelarCita(btn) {
-  var row = btn.closest('.appt-row');
-  var nombre = row.querySelector('h4') ? row.querySelector('h4').textContent : 'la cita';
-  row.style.opacity = '0.5';
-  row.style.transition = 'opacity .3s';
-  setTimeout(function(){
-    row.querySelector('.status-badge').className = 'status-badge status-cancelled';
-    row.querySelector('.status-badge').textContent = 'Cancelada';
-    btn.parentElement.innerHTML = '';
-    row.style.opacity = '1';
-    showToast('Cita con ' + nombre + ' cancelada');
-  }, 300);
-}
 
 /* ── Filtrar Psicólogos ────────────────────────────────────────────────── */
 function filtrarPsicologos() {
