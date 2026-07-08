@@ -52,7 +52,7 @@
       </button>
     </nav>
     <div class="sidebar-bottom">
-      <button class="nav-item" onclick="window.location.href='index.html'">
+      <button class="nav-item" onclick="cerrarSesion()">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
         Cerrar sesión
       </button>
@@ -74,9 +74,26 @@
         </div>
       </div>
       <div class="topbar-right">
-        <div class="topbar-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
-          <span class="notif-dot"></span>
+        <div class="notif-wrap" style="position:relative">
+          <div class="topbar-icon" onclick="toggleNotifications(event)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+            <span class="notif-dot" id="notifDot"></span>
+          </div>
+          <div class="notif-panel" id="notifPanel">
+            <div class="notif-panel-title">Notificaciones</div>
+            <div class="notif-item">
+              <span class="notif-emoji">📅</span>
+              <div><strong>Nueva solicitud de cita</strong><p>Tienes citas pendientes de confirmar en tu agenda.</p></div>
+            </div>
+            <div class="notif-item">
+              <span class="notif-emoji">🕐</span>
+              <div><strong>Configura tu disponibilidad</strong><p>Mantén actualizados tus horarios para que los estudiantes puedan agendar.</p></div>
+            </div>
+            <div class="notif-item">
+              <span class="notif-emoji">📝</span>
+              <div><strong>Notas de sesión pendientes</strong><p>Recuerda registrar tus observaciones después de cada cita.</p></div>
+            </div>
+          </div>
         </div>
         <div class="user-avatar" style="cursor:pointer">VE</div>
       </div>
@@ -84,8 +101,8 @@
 
     <div class="page active" id="page-dashboard">
       <div class="grid-3">
-        <div class="metric"><div class="metric-icon" style="background:var(--teal-light)">📅</div><div><div class="metric-value">4</div><div class="metric-label">citas hoy</div></div></div>
-        <div class="metric"><div class="metric-icon" style="background:var(--mint-light)">👥</div><div><div class="metric-value">18</div><div class="metric-label">pacientes activos</div></div></div>
+        <div class="metric"><div class="metric-icon" style="background:var(--teal-light)">📅</div><div><div class="metric-value" id="metricCitasHoy">4</div><div class="metric-label">citas agendadas</div></div></div>
+        <div class="metric"><div class="metric-icon" style="background:var(--mint-light)">👥</div><div><div class="metric-value" id="metricPacientes">18</div><div class="metric-label">pacientes activos</div></div></div>
         <div class="metric"><div class="metric-icon" style="background:#FEF9C3">⭐</div><div><div class="metric-value">4.9</div><div class="metric-label">calificación promedio</div></div></div>
       </div>
 
@@ -95,52 +112,11 @@
             <div class="card-title" style="justify-content:space-between">
               <span style="display:flex;align-items:center;gap:8px">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;color:var(--teal)"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                Agenda de hoy — 20 de mayo
+                Agenda reciente
               </span>
               <button class="btn btn-ghost btn-sm" onclick="navigate('agenda',null)">Ver semana</button>
             </div>
-            <div class="agenda-list">
-              <div class="agenda-row">
-                <div class="agenda-dot dot-green"></div>
-                <div class="agenda-time">9:00 AM</div>
-                <div class="agenda-av" style="background:linear-gradient(135deg,#028090,#02C39A)">S</div>
-                <div class="agenda-info"><h4>Sebastián Rueda Torres</h4><p>Estrés académico · Virtual · S/ 90</p></div>
-                <span class="status-badge status-confirmed">Confirmada</span>
-                <div class="agenda-actions">
-                  <button class="btn btn-ghost btn-sm" onclick="navigate('patients',null)">Ver paciente</button>
-                </div>
-              </div>
-              <div class="agenda-row">
-                <div class="agenda-dot dot-yellow"></div>
-                <div class="agenda-time">10:30 AM</div>
-                <div class="agenda-av" style="background:linear-gradient(135deg,#0D2137,#028090)">A</div>
-                <div class="agenda-info"><h4>Andrea Mejía Campos</h4><p>Ansiedad · Virtual · S/ 90</p></div>
-                <span class="status-badge status-pending">Pendiente</span>
-                <div class="agenda-actions">
-                  <button class="btn btn-ghost btn-sm" onclick="navigate('patients',null)">Ver paciente</button>
-                </div>
-              </div>
-              <div class="agenda-row">
-                <div class="agenda-dot dot-green"></div>
-                <div class="agenda-time">12:00 PM</div>
-                <div class="agenda-av" style="background:linear-gradient(135deg,#02C39A,#028090)">R</div>
-                <div class="agenda-info"><h4>Roberto Huanca Vera</h4><p>Depresión · Presencial · S/ 90</p></div>
-                <span class="status-badge status-confirmed">Confirmada</span>
-                <div class="agenda-actions">
-                  <button class="btn btn-ghost btn-sm" onclick="navigate('patients',null)">Ver paciente</button>
-                </div>
-              </div>
-              <div class="agenda-row">
-                <div class="agenda-dot dot-green"></div>
-                <div class="agenda-time">4:00 PM</div>
-                <div class="agenda-av" style="background:linear-gradient(135deg,#6366F1,#028090)">C</div>
-                <div class="agenda-info"><h4>Claudia Ríos Pizarro</h4><p>Relaciones · Virtual · S/ 90</p></div>
-                <span class="status-badge status-confirmed">Confirmada</span>
-                <div class="agenda-actions">
-                  <button class="btn btn-ghost btn-sm" onclick="navigate('patients',null)">Ver paciente</button>
-                </div>
-              </div>
-            </div>
+            <div class="agenda-list" id="resumenAgendaHoy"></div>
           </div>
         </div>
 
@@ -150,28 +126,7 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
               Pacientes recientes
             </div>
-            <div class="patient-list">
-              <div class="patient-row" onclick="navigate('patients',null)">
-                <div class="pat-av" style="background:linear-gradient(135deg,var(--teal),var(--mint))">S</div>
-                <div class="pat-info"><h4>Sebastián Rueda</h4><p>Hoy · 9:00 AM</p></div>
-                <span class="pat-mood">🙂</span>
-              </div>
-              <div class="patient-row" onclick="navigate('patients',null)">
-                <div class="pat-av" style="background:linear-gradient(135deg,var(--navy),var(--teal))">A</div>
-                <div class="pat-info"><h4>Andrea Mejía</h4><p>Hoy · 10:30 AM</p></div>
-                <span class="pat-mood">😕</span>
-              </div>
-              <div class="patient-row" onclick="navigate('patients',null)">
-                <div class="pat-av" style="background:linear-gradient(135deg,var(--mint),var(--teal))">R</div>
-                <div class="pat-info"><h4>Roberto Huanca</h4><p>Hoy · 12:00 PM</p></div>
-                <span class="pat-mood">😐</span>
-              </div>
-              <div class="patient-row" onclick="navigate('patients',null)">
-                <div class="pat-av" style="background:linear-gradient(135deg,#6366F1,var(--teal))">C</div>
-                <div class="pat-info"><h4>Claudia Ríos</h4><p>Hoy · 4:00 PM</p></div>
-                <span class="pat-mood">😊</span>
-              </div>
-            </div>
+            <div class="patient-list" id="resumenPacientesRecientes"></div>
             <button class="btn btn-secondary btn-sm" style="width:100%;justify-content:center;margin-top:14px" onclick="navigate('patients',null)">Ver todos los pacientes</button>
           </div>
         </div>
@@ -181,35 +136,23 @@
     <div class="page" id="page-agenda">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
         <h2 style="font-family:var(--display);font-size:28px;color:var(--navy)">Mi agenda</h2>
-        <div style="display:flex;gap:10px">
-          <button class="btn btn-ghost btn-sm">← Semana anterior</button>
-          <button class="btn btn-primary btn-sm">Esta semana</button>
-          <button class="btn btn-ghost btn-sm">Siguiente →</button>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-ghost btn-sm" onclick="cambiarSemana(-1)">← Semana anterior</button>
+          <button class="btn btn-primary btn-sm" onclick="irASemanaActual()">Esta semana</button>
+          <button class="btn btn-ghost btn-sm" onclick="cambiarSemana(1)">Siguiente →</button>
+          <span id="weekRangeLabel" style="font-size:12px;color:var(--muted);font-weight:600;margin-left:4px"></span>
         </div>
       </div>
       <div class="card">
-        <div class="week-cal">
-          <div class="week-day"><div class="week-day-name">Lun</div><div class="week-day-num">19</div><div class="week-slot slot-booked">S. Rueda 9am</div><div class="week-slot slot-available">Disp. 11am</div><div class="week-slot slot-empty"></div></div>
-          <div class="week-day"><div class="week-day-name">Mar</div><div class="week-day-num today">20</div><div class="week-slot slot-booked">S. Rueda</div><div class="week-slot slot-booked">A. Mejía</div><div class="week-slot slot-booked">R. Huanca</div></div>
-          <div class="week-day"><div class="week-day-name">Mié</div><div class="week-day-num">21</div><div class="week-slot slot-available">Disp. 10am</div><div class="week-slot slot-available">Disp. 11am</div><div class="week-slot slot-empty"></div></div>
-          <div class="week-day"><div class="week-day-name">Jue</div><div class="week-day-num">22</div><div class="week-slot slot-booked">C. Ríos 9am</div><div class="week-slot slot-available">Disp. 11am</div><div class="week-slot slot-empty"></div></div>
-          <div class="week-day"><div class="week-day-name">Vie</div><div class="week-day-num">23</div><div class="week-slot slot-available">Disp. 9am</div><div class="week-slot slot-booked">A. Mejía</div><div class="week-slot slot-empty"></div></div>
-          <div class="week-day"><div class="week-day-name">Sáb</div><div class="week-day-num">24</div><div class="week-slot slot-empty"></div><div class="week-slot slot-empty"></div><div class="week-slot slot-empty"></div></div>
-          <div class="week-day"><div class="week-day-name">Dom</div><div class="week-day-num">25</div><div class="week-slot slot-empty"></div><div class="week-slot slot-empty"></div><div class="week-slot slot-empty"></div></div>
-        </div>
+        <div class="week-cal" id="weekCal"></div>
         <div style="display:flex;gap:12px;flex-wrap:wrap">
           <div class="legend-item"><div class="legend-sq" style="background:var(--navy)"></div>Cita agendada</div>
           <div class="legend-item"><div class="legend-sq" style="background:var(--teal-light);border:1px solid var(--teal)"></div>Disponible</div>
           <div class="legend-item"><div class="legend-sq" style="background:var(--bg);border:1px dashed var(--border)"></div>No disponible</div>
         </div>
       </div>
-      <h3 style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:12px">Citas de hoy — martes 20 de mayo</h3>
-      <div class="agenda-list">
-        <div class="agenda-row"><div class="agenda-dot dot-green"></div><div class="agenda-time">9:00 AM</div><div class="agenda-av" style="background:linear-gradient(135deg,var(--teal),var(--mint))">S</div><div class="agenda-info"><h4>Sebastián Rueda Torres</h4><p>Estrés académico · Virtual</p></div><span class="status-badge status-confirmed">Confirmada</span><div class="agenda-actions"><button class="btn btn-ghost btn-sm" onclick="verPaciente('sebastian')">Ver paciente</button><button class="btn btn-primary btn-sm" onclick="verPaciente('sebastian'); setTimeout(function(){document.getElementById('noteTextarea').focus();},400)">Notas</button></div></div>
-        <div class="agenda-row" id="agendaAndrea"><div class="agenda-dot dot-yellow" id="dotAndrea"></div><div class="agenda-time">10:30 AM</div><div class="agenda-av" style="background:linear-gradient(135deg,var(--navy),var(--teal))">A</div><div class="agenda-info"><h4>Andrea Mejía Campos</h4><p>Ansiedad · Virtual</p></div><span class="status-badge status-pending" id="badgeAndrea">Pendiente</span><div class="agenda-actions" id="actionsAndrea"><button class="btn btn-ghost btn-sm" onclick="verPaciente('andrea')">Ver paciente</button><button class="btn btn-primary btn-sm" onclick="confirmarCitaAgenda()">Confirmar</button><button class="btn btn-danger btn-sm" onclick="rechazarCitaAgenda()">Rechazar</button></div></div>
-        <div class="agenda-row"><div class="agenda-dot dot-green"></div><div class="agenda-time">12:00 PM</div><div class="agenda-av" style="background:linear-gradient(135deg,var(--mint),var(--teal))">R</div><div class="agenda-info"><h4>Roberto Huanca Vera</h4><p>Depresión · Presencial</p></div><span class="status-badge status-confirmed">Confirmada</span><div class="agenda-actions"><button class="btn btn-ghost btn-sm" onclick="verPaciente('roberto')">Ver paciente</button><button class="btn btn-primary btn-sm" onclick="verPaciente('roberto'); setTimeout(function(){document.getElementById('noteTextarea').focus();},400)">Notas</button></div></div>
-        <div class="agenda-row"><div class="agenda-dot dot-green"></div><div class="agenda-time">4:00 PM</div><div class="agenda-av" style="background:linear-gradient(135deg,#6366F1,var(--teal))">C</div><div class="agenda-info"><h4>Claudia Ríos Pizarro</h4><p>Relaciones · Virtual</p></div><span class="status-badge status-confirmed">Confirmada</span><div class="agenda-actions"><button class="btn btn-ghost btn-sm" onclick="verPaciente('claudia')">Ver paciente</button><button class="btn btn-primary btn-sm" onclick="verPaciente('claudia'); setTimeout(function(){document.getElementById('noteTextarea').focus();},400)">Notas</button></div></div>
-      </div>
+      <h3 style="font-size:16px;font-weight:700;color:var(--navy);margin-bottom:12px">Tus citas</h3>
+      <div class="agenda-list" id="agendaHoyList"></div>
     </div>
 
     <div class="page" id="page-patients">
@@ -217,61 +160,8 @@
         <h2 style="font-family:var(--display);font-size:28px;color:var(--navy)">Mis pacientes</h2>
         <input type="text" placeholder="Buscar paciente..." style="padding:10px 16px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:var(--font);font-size:14px;outline:none;min-width:220px" />
       </div>
-      <div id="patientsList">
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">
-          <div class="card" style="cursor:pointer;transition:transform .2s;margin-bottom:0" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''" onclick="showPatient()">
-            <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
-              <div class="pat-av" style="background:linear-gradient(135deg,var(--teal),var(--mint));width:52px;height:52px;font-size:20px">S</div>
-              <div><h4 style="font-size:15px;font-weight:700;color:var(--navy)">Sebastián Rueda Torres</h4><p style="font-size:12px;color:var(--muted)">Paciente desde mayo 2026</p></div>
-            </div>
-            <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
-              <span class="pill">Estrés</span><span class="pill">Ansiedad</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <span style="font-size:12px;color:var(--muted)">Última sesión: hoy</span>
-              <span style="font-size:18px">🙂</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
-              <span style="font-size:12px;color:var(--muted)">8 sesiones totales</span>
-              <span style="font-size:12px;font-weight:600;color:var(--teal)">Ver perfil →</span>
-            </div>
+      <div id="patientsList" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">
           </div>
-          <div class="card" style="cursor:pointer;transition:transform .2s;margin-bottom:0" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''">
-            <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
-              <div class="pat-av" style="background:linear-gradient(135deg,var(--navy),var(--teal));width:52px;height:52px;font-size:20px">A</div>
-              <div><h4 style="font-size:15px;font-weight:700;color:var(--navy)">Andrea Mejía Campos</h4><p style="font-size:12px;color:var(--muted)">Paciente desde abril 2026</p></div>
-            </div>
-            <div style="display:flex;gap:8px;margin-bottom:12px">
-              <span class="pill">Ansiedad</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <span style="font-size:12px;color:var(--muted)">Última sesión: hoy</span>
-              <span style="font-size:18px">😕</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
-              <span style="font-size:12px;color:var(--muted)">5 sesiones totales</span>
-              <span style="font-size:12px;font-weight:600;color:var(--teal)">Ver perfil →</span>
-            </div>
-          </div>
-          <div class="card" style="cursor:pointer;transition:transform .2s;margin-bottom:0" onmouseover="this.style.transform='translateY(-4px)'" onmouseout="this.style.transform=''">
-            <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
-              <div class="pat-av" style="background:linear-gradient(135deg,var(--mint),var(--teal));width:52px;height:52px;font-size:20px">R</div>
-              <div><h4 style="font-size:15px;font-weight:700;color:var(--navy)">Roberto Huanca Vera</h4><p style="font-size:12px;color:var(--muted)">Paciente desde marzo 2026</p></div>
-            </div>
-            <div style="display:flex;gap:8px;margin-bottom:12px">
-              <span class="pill">Depresión</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <span style="font-size:12px;color:var(--muted)">Última sesión: hoy</span>
-              <span style="font-size:18px">😐</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
-              <span style="font-size:12px;color:var(--muted)">12 sesiones totales</span>
-              <span style="font-size:12px;font-weight:600;color:var(--teal)">Ver perfil →</span>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <div id="patientDetail" style="display:none">
         <div style="margin-bottom:16px">
@@ -281,30 +171,27 @@
           <div class="pat-profile-av" style="background:linear-gradient(135deg,var(--teal),var(--mint))">S</div>
           <div class="pat-profile-info">
             <h2>Sebastián Rueda Torres</h2>
-            <p>Paciente desde mayo 2026 · Estrés académico y ansiedad</p>
+            <p id="patProfileSubtitle">Paciente de MindSpace</p>
             <div class="pat-profile-stats">
-              <div class="pat-stat"><div class="pat-stat-val">8</div><div class="pat-stat-label">sesiones totales</div></div>
-              <div class="pat-stat"><div class="pat-stat-val">🙂</div><div class="pat-stat-label">estado hoy</div></div>
-              <div class="pat-stat"><div class="pat-stat-val">7</div><div class="pat-stat-label">días de racha</div></div>
+              <div class="pat-stat"><div class="pat-stat-val" id="patStatSesiones">0</div><div class="pat-stat-label">sesiones totales</div></div>
+              <div class="pat-stat"><div class="pat-stat-val" id="patStatMood">😐</div><div class="pat-stat-label">estado hoy</div></div>
+              <div class="pat-stat"><div class="pat-stat-val" id="patStatCheckins">0</div><div class="pat-stat-label">check-ins registrados</div></div>
             </div>
           </div>
           <div style="margin-left:auto">
-            <button class="btn btn-primary btn-sm">Agendar próxima cita</button>
+            <button class="btn btn-primary btn-sm" onclick="navigate('agenda',null)">Ver agenda</button>
           </div>
         </div>
 
         <div class="grid-2">
           <div class="card">
-            <div class="card-title">Historial emocional — últimos 30 días</div>
+            <div class="card-title">Historial emocional — últimos check-ins</div>
             <div style="height:120px;margin-bottom:16px"><canvas id="patChart"></canvas></div>
-            <div class="mood-history-row"><span class="mood-date">Hoy 20/05</span><span class="mood-emoji">🙂</span><span class="mood-note">Se siente bien, exámenes esta semana pero controlado</span></div>
-            <div class="mood-history-row"><span class="mood-date">Ayer 19/05</span><span class="mood-emoji">😐</span><span class="mood-note">Día normal, algo de cansancio</span></div>
-            <div class="mood-history-row"><span class="mood-date">18/05</span><span class="mood-emoji">😕</span><span class="mood-note">Estrés por entrega de proyecto</span></div>
-            <div class="mood-history-row"><span class="mood-date">17/05</span><span class="mood-emoji">🙂</span><span class="mood-note">Buen día, descansó bien</span></div>
+            <div id="moodHistoryList"></div>
           </div>
           <div class="card">
             <div class="card-title">Notas de sesión</div>
-            <div class="note-item" id="noteInputItem"><div class="note-date" id="noteSessionLabel">Sesión 9 · <span id="noteDateLabel"></span></div><textarea class="note-input" id="noteTextarea" placeholder="Escribe tus observaciones de esta sesión..." rows="4"></textarea><div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px"><span id="noteCharCount" style="font-size:11px;color:var(--muted)">0 / 500 caracteres</span><button class="btn btn-primary btn-sm" onclick="guardarNota()">Guardar nota</button></div></div>
+            <div class="note-item" id="noteInputItem"><div class="note-date" id="noteSessionLabel">Sesión 9 · <span id="noteDateLabel"></span></div><textarea class="note-input" id="noteTextarea" placeholder="Escribe tus observaciones de esta sesión..." rows="4"></textarea><div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px"><span id="noteCharCount" style="font-size:11px;color:var(--muted)">0 / 500 caracteres</span><button class="btn btn-primary" onclick="guardarNotaClinicaDinamica()">Guardar nota</button></div></div>
             <div id="notesHistory"><div class="note-item"><div class="note-date">Sesión 7 · 6 mayo 2026</div><div class="note-text">Paciente reporta mejora en manejo del estrés. Implementó técnicas de respiración antes de los exámenes con resultados positivos. Se sugirió continuar con el registro emocional diario. Próxima sesión: trabajar en manejo del tiempo.</div></div>
             <div class="note-item"><div class="note-date">Sesión 6 · 22 abril 2026</div><div class="note-text">Episodio de ansiedad la semana pasada antes de exámenes parciales. Se exploraron los pensamientos automáticos. Buena receptividad a las técnicas de reestructuración cognitiva.</div></div>
           </div></div>
@@ -315,7 +202,7 @@
     <div class="page" id="page-availability">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
         <h2 style="font-family:var(--display);font-size:28px;color:var(--navy)">Mi disponibilidad</h2>
-        <button class="btn btn-primary" onclick="alert('Disponibilidad guardada correctamente')">Guardar configuración</button>
+        <button class="btn btn-primary" onclick="guardarDisponibilidad()">Guardar configuración</button>
       </div>
       <p style="color:var(--muted);font-size:14px;margin-bottom:20px">Haz clic en los bloques para activar o desactivar tu disponibilidad. Los pacientes solo podrán agendar en los horarios que marques como disponibles.</p>
       <div class="card">
@@ -340,30 +227,30 @@
     <div class="page" id="page-profile">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
         <h2 style="font-family:var(--display);font-size:28px;color:var(--navy)">Mi perfil profesional</h2>
-        <button class="btn btn-primary" onclick="alert('Perfil guardado correctamente')">Guardar cambios</button>
+        <button class="btn btn-primary" onclick="guardarPerfilPsicologo()">Guardar cambios</button>
       </div>
       <div class="grid-2">
         <div class="card">
           <div class="card-title">Información personal</div>
           <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:24px;gap:12px">
             <div class="pat-av" style="width:80px;height:80px;font-size:28px;background:linear-gradient(135deg,var(--teal),var(--mint))">VE</div>
-            <button class="btn btn-ghost btn-sm">Cambiar foto</button>
+            <button class="btn btn-ghost btn-sm" onclick="showToast('La carga de fotos estará disponible próximamente.')">Cambiar foto</button>
           </div>
           <div class="form-row">
-            <div class="form-group"><label>Nombre</label><input type="text" value="Valeria" /></div>
-            <div class="form-group"><label>Apellidos</label><input type="text" value="Espinoza Ríos" /></div>
+            <div class="form-group"><label>Nombre</label><input type="text" id="perfilNombre" value="Valeria" /></div>
+            <div class="form-group"><label>Apellidos</label><input type="text" id="perfilApellidos" value="Espinoza Ríos" /></div>
           </div>
-          <div class="form-group"><label>Correo electrónico</label><input type="email" value="v.espinoza@mindspace.pe" /></div>
-          <div class="form-group"><label>Número de colegiatura</label><input type="text" value="CPPe-12345" /></div>
-          <div class="form-group"><label>Distrito</label><input type="text" value="San Isidro, Lima" /></div>
+          <div class="form-group"><label>Correo electrónico</label><input type="email" id="perfilCorreo" value="valeria@mindspace.com" disabled title="El correo de acceso no se puede modificar" /></div>
+          <div class="form-group"><label>Número de colegiatura</label><input type="text" id="perfilColegiatura" value="CPPe-12345" /></div>
+          <div class="form-group"><label>Distrito</label><input type="text" id="perfilDistrito" value="San Isidro, Lima" /></div>
         </div>
         <div class="card">
           <div class="card-title">Información profesional</div>
-          <div class="form-group"><label>Especialidades</label><input type="text" value="Ansiedad, Depresión, Estrés en jóvenes" /></div>
-          <div class="form-group"><label>Años de experiencia</label><input type="number" value="8" /></div>
-          <div class="form-group"><label>Modalidad de atención</label><select><option selected>Virtual y presencial</option><option>Solo virtual</option><option>Solo presencial</option></select></div>
-          <div class="form-group"><label>Precio por sesión (S/)</label><input type="number" value="90" /></div>
-          <div class="form-group"><label>Sobre mí</label><textarea rows="4">Psicóloga clínica con 8 años de experiencia especializada en el tratamiento de ansiedad y depresión en adultos jóvenes. Mi enfoque es cognitivo-conductual con elementos de mindfulness.</textarea></div>
+          <div class="form-group"><label>Especialidades</label><input type="text" id="perfilEspecialidades" value="Ansiedad, Depresión, Estrés en jóvenes" /></div>
+          <div class="form-group"><label>Años de experiencia</label><input type="number" id="perfilExperiencia" value="8" /></div>
+          <div class="form-group"><label>Modalidad de atención</label><select id="perfilModalidad"><option>Virtual y presencial</option><option>Solo virtual</option><option>Solo presencial</option></select></div>
+          <div class="form-group"><label>Precio por sesión (S/)</label><input type="number" id="perfilPrecio" value="90" /></div>
+          <div class="form-group"><label>Sobre mí</label><textarea rows="4" id="perfilBio">Psicóloga clínica con 8 años de experiencia especializada en el tratamiento de ansiedad y depresión en adultos jóvenes. Mi enfoque es cognitivo-conductual con elementos de mindfulness.</textarea></div>
         </div>
       </div>
     </div>
@@ -423,19 +310,6 @@
 </style>
 
 <script>
-/* ── showToast ───────────────────────────────────────────────────────────── */
-function showToast(msg, dur) {
-  dur = dur || 2500;
-  var old = document.getElementById('mindspace-toast');
-  if (old) old.remove();
-  var t = document.createElement('div');
-  t.id = 'mindspace-toast';
-  t.className = 'toast-success';
-  t.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M20 6L9 17l-5-5"/></svg> ' + msg;
-  document.body.appendChild(t);
-  setTimeout(function(){ t.classList.add('hide'); setTimeout(function(){ t.remove(); }, 400); }, dur);
-}
-
 /* ── Inicializar etiqueta de fecha y contador en el textarea ─────────────── */
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -458,269 +332,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
-
-/* ── Número de sesión incremental ───────────────────────────────────────── */
-var _sessionCount = 9;
-
-/* ── guardarNota ─────────────────────────────────────────────────────────── */
-function guardarNota() {
-  var textarea = document.getElementById('noteTextarea');
-  var texto    = textarea ? textarea.value.trim() : '';
-
-  /* Validación: no guardar vacío */
-  if (!texto) {
-    var warn = document.getElementById('noteEmptyWarn');
-    if (!warn) {
-      warn = document.createElement('p');
-      warn.id = 'noteEmptyWarn';
-      warn.className = 'note-empty-msg';
-      warn.textContent = '⚠ Escribe una observación antes de guardar.';
-      textarea.parentElement.appendChild(warn);
-    }
-    warn.style.display = 'block';
-    textarea.style.borderColor = '#E63946';
-    setTimeout(function(){ warn.style.display='none'; textarea.style.borderColor=''; }, 2800);
-    return;
-  }
-
-  /* Fecha y hora actual */
-  var months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-  var now    = new Date();
-  var fecha  = now.getDate() + ' de ' + months[now.getMonth()] + ' de ' + now.getFullYear();
-  var hora   = now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
-
-  /* Construir nuevo note-item */
-  var newNote = document.createElement('div');
-  newNote.className = 'note-item note-saved';
-  newNote.innerHTML =
-    '<div class="note-date">Sesión ' + _sessionCount + ' · ' + fecha + ' · <span style="color:var(--muted);font-size:11px">' + hora + '</span></div>' +
-    '<div class="note-text">' + texto.replace(/</g,'&lt;').replace(/>/g,'&gt;') + '</div>';
-
-  /* Insertar al inicio del historial */
-  var history = document.getElementById('notesHistory');
-  if (history) {
-    history.insertBefore(newNote, history.firstChild);
-  }
-
-  /* Actualizar número de sesiones en el stat del perfil */
-  var statVals = document.querySelectorAll('#patientDetail .pat-stat-val');
-  if (statVals.length > 0) {
-    var current = parseInt(statVals[0].textContent) || 0;
-    statVals[0].textContent = current + 1;
-    _sessionCount = current + 2; /* próxima sesión */
-  }
-
-  /* Actualizar label de la nueva sesión */
-  var sessionLabel = document.getElementById('noteSessionLabel');
-  if (sessionLabel) {
-    sessionLabel.innerHTML = 'Sesión ' + _sessionCount + ' · <span id="noteDateLabel">' + fecha + '</span>';
-  }
-
-  /* Limpiar textarea y contador */
-  textarea.value = '';
-  var counter = document.getElementById('noteCharCount');
-  if (counter) counter.textContent = '0 / 500 caracteres';
-
-  /* Toast */
-  showToast('✓ Nota guardada — Sesión ' + (_sessionCount - 1));
-}
-</script>
-
-
-<script>
-/* ═══════════════════════════════════════════════════════════════════════════
-   DATOS DE PACIENTES
-   ═══════════════════════════════════════════════════════════════════════ */
-var PACIENTES = {
-  sebastian: {
-    nombre: 'Sebastián Rueda Torres',
-    inicial: 'S',
-    grad: 'linear-gradient(135deg,var(--teal),var(--mint))',
-    desde: 'Paciente desde mayo 2026 · Estrés académico y ansiedad',
-    sesiones: 9, estadoHoy: '🙂', racha: 7,
-    historial: [
-      { fecha: 'Hoy 20/05', emoji: '🙂', nota: 'Se siente bien, exámenes esta semana pero controlado' },
-      { fecha: 'Ayer 19/05', emoji: '😐', nota: 'Día normal, algo de cansancio' },
-      { fecha: '18/05', emoji: '😕', nota: 'Estrés por entrega de proyecto' },
-      { fecha: '17/05', emoji: '🙂', nota: 'Buen día, descansó bien' }
-    ],
-    notas: [
-      { sesion: 7, fecha: '6 mayo 2026', texto: 'Paciente reporta mejora en manejo del estrés. Implementó técnicas de respiración antes de los exámenes con resultados positivos. Se sugirió continuar con el registro emocional diario. Próxima sesión: trabajar en manejo del tiempo.' },
-      { sesion: 6, fecha: '22 abril 2026', texto: 'Episodio de ansiedad la semana pasada antes de exámenes parciales. Se exploraron los pensamientos automáticos. Buena receptividad a las técnicas de reestructuración cognitiva.' }
-    ]
-  },
-  andrea: {
-    nombre: 'Andrea Mejía Campos',
-    inicial: 'A',
-    grad: 'linear-gradient(135deg,var(--navy),var(--teal))',
-    desde: 'Paciente desde abril 2026 · Ansiedad generalizada',
-    sesiones: 5, estadoHoy: '😕', racha: 3,
-    historial: [
-      { fecha: 'Hoy 20/05', emoji: '😕', nota: 'Semana difícil, varios episodios de angustia' },
-      { fecha: 'Ayer 19/05', emoji: '😐', nota: 'Algo mejor tras ejercicios de respiración' },
-      { fecha: '18/05', emoji: '😢', nota: 'Crisis de ansiedad por la mañana' },
-      { fecha: '17/05', emoji: '😕', nota: 'Cansancio acumulado, poco sueño' }
-    ],
-    notas: [
-      { sesion: 4, fecha: '13 mayo 2026', texto: 'Paciente describe episodios de ansiedad frecuentes antes de situaciones sociales. Se trabajó exposición gradual. Muestra disposición al cambio. Tarea: registro de situaciones disparadoras.' },
-      { sesion: 3, fecha: '29 abril 2026', texto: 'Revisión de registros. Identifica que el trabajo es el principal estresor. Se introdujeron técnicas de mindfulness básico para el manejo en el momento.' }
-    ]
-  },
-  roberto: {
-    nombre: 'Roberto Huanca Vera',
-    inicial: 'R',
-    grad: 'linear-gradient(135deg,var(--mint),var(--teal))',
-    desde: 'Paciente desde marzo 2026 · Depresión moderada',
-    sesiones: 12, estadoHoy: '😐', racha: 5,
-    historial: [
-      { fecha: 'Hoy 20/05', emoji: '😐', nota: 'Estable, sigue con el plan de activación conductual' },
-      { fecha: 'Ayer 19/05', emoji: '🙂', nota: 'Salió a caminar, primer día en semanas' },
-      { fecha: '18/05', emoji: '😐', nota: 'Sin cambios significativos' },
-      { fecha: '17/05', emoji: '😕', nota: 'Falta de motivación por la mañana' }
-    ],
-    notas: [
-      { sesion: 11, fecha: '6 mayo 2026', texto: 'Sesión de revisión. Mejora notable en calidad del sueño. Completó 3 de 5 actividades programadas. Se reforzó la importancia de la constancia. Próxima sesión: explorar área social.' },
-      { sesion: 10, fecha: '22 abril 2026', texto: 'Trabajamos activación conductual. El paciente logró retomar actividad física 2 veces en la semana. Ánimo ligeramente mejor. Persiste la apatía en las mañanas.' }
-    ]
-  },
-  claudia: {
-    nombre: 'Claudia Ríos Pizarro',
-    inicial: 'C',
-    grad: 'linear-gradient(135deg,#6366F1,var(--teal))',
-    desde: 'Paciente desde mayo 2026 · Manejo de relaciones',
-    sesiones: 3, estadoHoy: '🙂', racha: 6,
-    historial: [
-      { fecha: 'Hoy 20/05', emoji: '🙂', nota: 'Conversación difícil con su pareja, pero la manejó bien' },
-      { fecha: 'Ayer 19/05', emoji: '🙂', nota: 'Buen día, aplicó técnicas de comunicación asertiva' },
-      { fecha: '18/05', emoji: '😐', nota: 'Algo de tensión en casa' },
-      { fecha: '17/05', emoji: '🙂', nota: 'Fin de semana tranquilo' }
-    ],
-    notas: [
-      { sesion: 2, fecha: '13 mayo 2026', texto: 'Paciente explora patrones relacionales desde su historia familiar. Alta capacidad de introspección. Se trabajaron límites saludables en relaciones de pareja. Muy receptiva al proceso.' },
-      { sesion: 1, fecha: '6 mayo 2026', texto: 'Primera sesión formal. Motivo de consulta: dificultades de comunicación en su relación de pareja. Antecedentes: relación de 3 años con conflictos recurrentes por comunicación. Se estableció el encuadre terapéutico.' }
-    ]
-  }
-};
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   VER PACIENTE DESDE AGENDA
-   ═══════════════════════════════════════════════════════════════════════ */
-function verPaciente(id) {
-  var p = PACIENTES[id];
-  if (!p) return;
-
-  /* Navegar a Mis Pacientes */
-  navigate('patients', null);
-  document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
-  var navPat = document.querySelector('.nav-item[onclick*="patients"]');
-  if (navPat) navPat.classList.add('active');
-
-  /* Mostrar detalle */
-  document.getElementById('patientsList').style.display = 'none';
-  document.getElementById('patientDetail').style.display = 'block';
-
-  /* Actualizar avatar y nombre */
-  var av = document.querySelector('#patientDetail .pat-profile-av');
-  if (av) { av.textContent = p.inicial; av.style.background = p.grad; }
-
-  var h2 = document.querySelector('#patientDetail .pat-profile-info h2');
-  if (h2) h2.textContent = p.nombre;
-
-  var sub = document.querySelector('#patientDetail .pat-profile-info > p');
-  if (sub) sub.textContent = p.desde;
-
-  /* Stats */
-  var stats = document.querySelectorAll('#patientDetail .pat-stat-val');
-  if (stats[0]) stats[0].textContent = p.sesiones;
-  if (stats[1]) stats[1].textContent = p.estadoHoy;
-  if (stats[2]) stats[2].textContent = p.racha;
-
-  /* Historial emocional */
-  var rows = document.querySelectorAll('#patientDetail .mood-history-row');
-  p.historial.forEach(function(h, i) {
-    if (rows[i]) {
-      rows[i].querySelector('.mood-date').textContent  = h.fecha;
-      rows[i].querySelector('.mood-emoji').textContent = h.emoji;
-      rows[i].querySelector('.mood-note').textContent  = h.nota;
-    }
-  });
-
-  /* Notas históricas */
-  var history = document.getElementById('notesHistory');
-  if (history) {
-    history.innerHTML = '';
-    p.notas.forEach(function(n) {
-      var div = document.createElement('div');
-      div.className = 'note-item';
-      div.innerHTML =
-        '<div class="note-date">Sesión ' + n.sesion + ' · ' + n.fecha + '</div>' +
-        '<div class="note-text">' + n.texto + '</div>';
-      history.appendChild(div);
-    });
-  }
-
-  /* Label de nueva sesión */
-  var months = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-  var d = new Date();
-  var fecha = d.getDate() + ' de ' + months[d.getMonth()] + ' de ' + d.getFullYear();
-  var sesLabel = document.getElementById('noteSessionLabel');
-  if (sesLabel) sesLabel.innerHTML = 'Sesión ' + (p.sesiones + 1) + ' · <span id="noteDateLabel">' + fecha + '</span>';
-
-  /* Limpiar textarea */
-  var ta = document.getElementById('noteTextarea');
-  if (ta) ta.value = '';
-  var cc = document.getElementById('noteCharCount');
-  if (cc) cc.textContent = '0 / 500 caracteres';
-
-  /* Redibujar chart */
-  var ctx = document.getElementById('patChart');
-  if (ctx && ctx._chartInstance) {
-    ctx._chartInstance = false;
-    ctx.getContext('2d').clearRect(0, 0, ctx.width, ctx.height);
-  }
-  if (typeof buildPatChart === 'function') {
-    setTimeout(buildPatChart, 150);
-  }
-
-  window.scrollTo(0, 0);
-}
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   CONFIRMAR / RECHAZAR CITA PENDIENTE
-   ═══════════════════════════════════════════════════════════════════════ */
-function confirmarCitaAgenda() {
-  var badge   = document.getElementById('badgeAndrea');
-  var dot     = document.getElementById('dotAndrea');
-  var actions = document.getElementById('actionsAndrea');
-
-  badge.className   = 'status-badge status-confirmed';
-  badge.textContent = 'Confirmada';
-  dot.className     = 'agenda-dot dot-green';
-
-  /* Reemplazar botones por solo "Ver paciente" + "Notas" */
-  actions.innerHTML =
-    '<button class="btn btn-ghost btn-sm" onclick="verPaciente(\'andrea\')">Ver paciente</button>' +
-    '<button class="btn btn-primary btn-sm" onclick="verPaciente(\'andrea\')">Notas</button>';
-
-  showToast('✓ Cita de Andrea Mejía confirmada · 10:30 AM');
-}
-
-function rechazarCitaAgenda() {
-  var badge   = document.getElementById('badgeAndrea');
-  var dot     = document.getElementById('dotAndrea');
-  var actions = document.getElementById('actionsAndrea');
-  var row     = document.getElementById('agendaAndrea');
-
-  badge.className   = 'status-badge status-cancelled';
-  badge.textContent = 'Cancelada';
-  dot.className     = 'agenda-dot dot-gray';
-  row.style.opacity = '0.55';
-
-  actions.innerHTML =
-    '<button class="btn btn-ghost btn-sm" onclick="verPaciente(\'andrea\')">Ver paciente</button>';
-
-  showToast('Cita de Andrea Mejía cancelada · 10:30 AM');
-}
 </script>
 
 </body>
