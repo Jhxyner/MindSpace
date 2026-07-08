@@ -298,7 +298,7 @@ inicializarBaseDeDatosMindSpace();
 // ── CHATBOT IA (OPENAI INTEGRATION) ─────────────────────────────────
 
 // ⚠️ REEMPLAZA ESTO CON TU API KEY REAL PARA LA PRESENTACIÓN ⚠️
-const OPENAI_API_KEY = 'AQ.Ab8RN6LpfhVAk5WS_k5iomdNfZ2qgA_gVhb27wEryqfTSKlEXQ'; 
+const OPENAI_API_KEY = 'AQ.Ab8RN6K3g46cPl2slYYQ2qjzGGpIVxnxP-bOQFE-izUopQCrog'; 
 
 function toggleChat() {
   const windowEl = document.getElementById('chat-window');
